@@ -6,6 +6,10 @@ from database_setup import Category, Base, CatalogItem
 engine = create_engine('sqlite:///catalogitems.db')
 Base.metadata.bind = engine
 
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+
+
 #Books of John Grisham (= Category1)
 category1 = Category(name = "John Grisham")
 
@@ -133,9 +137,6 @@ catalogItem2 = CatalogItem(
 
 session.add(catalogItem2)
 session.commit()
-
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
 
 
 print ("added books!")
