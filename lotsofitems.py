@@ -136,3 +136,6 @@ session.commit()
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+
+print ("added books!")
