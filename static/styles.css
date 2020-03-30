@@ -4,3 +4,5 @@ h1              { border-bottom: 2px solid #eee; }
 h2              { font-size: 1.2em; }
 
 p               { color: #CCCCCC;}
+
+a {t ext-decoration: none; color:#FFFFCC; font-size: .75em; }
