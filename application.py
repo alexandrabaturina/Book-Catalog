@@ -33,6 +33,24 @@ def newCatalogItem(category_id):
         return render_template('newitem.html', category_id=category_id)
 
 
+# Edit a category item
+@app.route('/category/<int:category_id>/list/<int:list_id>/edit',
+           methods=['GET', 'POST'])
+def editCatalogItem(category_id, list_id):
+    editedItem = session.query(CatalogItem).filter_by(id=list_id).one()
+    if request.method == 'POST':
+        if request.form['name']:
+            editedItem.name = request.form['name']
+        if request.form['description']:
+            editedItem.description = request.form['description']
+        session.add(editedItem)
+        session.commit()
+        return redirect(url_for('showList', category_id=category_id))
+    else:
+
+        return render_template('edititem.html', category_id=category_id,
+                                list_id=list_id, item=editedItem)
+
 app = Flask(__name__)
 
 if __name__ == '__main__':
