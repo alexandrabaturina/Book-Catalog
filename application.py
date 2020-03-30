@@ -38,6 +38,15 @@ def showCategories():
     categories = session.query(Category).all()
     return render_template('categories.html', categories=categories)
 
+# Show a list of items in a category
+@app.route('/category/<int:category_id>/')
+@app.route('/category/<int:category_id>/list/')
+def showList(category_id):
+    category = session.query(Category).filter_by(id=category_id).one()
+    items = session.query(CatalogItem).filter_by(
+        category_id=category_id).all()
+    return render_template('list.html', items=items, category=category)
+
 # Create a new category item
 @app.route(
     '/category/<int:category_id>/list/new/', methods=['GET', 'POST'])
