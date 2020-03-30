@@ -1,0 +1,30 @@
+<html>
+
+	<body>
+
+		<h1>Books by {{ category.name }}</h1>
+
+    {% if items !=[] %}
+
+		<p><a href = "{{url_for('newCatalogItem', category_id = category.id )}}">	Add New Book</a></p>
+
+		{% for i in items %}
+
+		<h2>{{i.name}}</h2>
+
+		<p>Description: {{i.description}}</p>
+
+		<a href='{{url_for('editCatalogItem', category_id = category.id, list_id=i.id ) }}' >Edit</a> </br>
+		<a href='{{url_for('deleteCatalogItem', category_id = category.id, list_id=i.id ) }}' >Delete</a>
+</br>
+</br>
+		{% endfor %}
+
+		{% else %}
+		<p> You currently have no books of this author. <p>
+		<a href = "{{url_for('newCatalogItem', category_id = category.id )}}">Add New Book</a>
+		{% endif %}
+
+
+</body>
+</html>
