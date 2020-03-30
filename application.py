@@ -38,6 +38,20 @@ def showCategories():
     categories = session.query(Category).all()
     return render_template('categories.html', categories=categories)
 
+# Create a new category
+@app.route('/category/new/', methods=['GET', 'POST'])
+def newCategory():
+    if request.method == 'POST':
+        newCategory = Category(name=request.form['name'],
+                                user_id = login_session['user_id'])
+        session.add(newCategory)
+        session.commit()
+        return redirect(url_for('showCategories'))
+    else:
+        return render_template('newCategory.html')
+
+
+
 # Show a list of items in a category
 @app.route('/category/<int:category_id>/')
 @app.route('/category/<int:category_id>/list/')
