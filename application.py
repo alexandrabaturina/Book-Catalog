@@ -51,6 +51,18 @@ def editCatalogItem(category_id, list_id):
         return render_template('edititem.html', category_id=category_id,
                                 list_id=list_id, item=editedItem)
 
+# Delete a category item
+@app.route('/category/<int:category_id>/list/<int:list_id>/delete',
+           methods=['GET', 'POST'])
+def deleteCatalogItem(category_id, list_id):
+    itemToDelete = session.query(CatalogItem).filter_by(id=list_id).one()
+    if request.method == 'POST':
+        session.delete(itemToDelete)
+        session.commit()
+        return redirect(url_for('showList', category_id=category_id))
+    else:
+        return render_template('deleteitem.html', item=itemToDelete)
+
 app = Flask(__name__)
 
 if __name__ == '__main__':
