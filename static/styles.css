@@ -6,3 +6,8 @@ h2              { font-size: 1.2em; }
 p               { color: #CCCCCC;}
 
 a {t ext-decoration: none; color:#FFFFCC; font-size: .75em; }
+
+.pane { position:absolute; left: 25%; border: 2px solid;
+    border-radius: 25px; padding: 5px; margin: 5px; border-color: #999999;
+    background-color: #333333; width: 50%; }
+.header         {left:50%; text-align: center; }
