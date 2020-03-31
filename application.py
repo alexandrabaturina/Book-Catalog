@@ -285,6 +285,14 @@ def deleteCatalogItem(category_id, list_id):
     else:
         return render_template('deleteitem.html', item=itemToDelete)
 
+def getUserID(email):
+    """Get user id."""
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
+
 app = Flask(__name__)
 
 if __name__ == '__main__':
