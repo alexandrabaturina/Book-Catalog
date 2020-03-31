@@ -298,6 +298,18 @@ def getUserInfo(user_id):
     user = session.query(User).filter_by(id=user_id).one()
     return user
 
+# Create a new user in the database
+def createUser(login_session):
+    """Create a user."""
+    newUser = User(
+                    name=login_session['username'],
+                    email=login_session['email'],
+                    picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
 app = Flask(__name__)
 
 if __name__ == '__main__':
