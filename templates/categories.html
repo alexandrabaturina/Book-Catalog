@@ -1,10 +1,15 @@
 <html>
 
+<head>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+
 <body>
 
-<h1>Authors</h1>
-
 {% include "header.html" %}
+<div class = 'pane'>
+<h1>Authors</h1>
 
 <p><a href="{{url_for('newCategory')}}" > Add New Author</a></p>
 
@@ -16,7 +21,9 @@
 
 {% endfor %}
 
+</br></br>
 
+</div>
 </body>
 
 </html>

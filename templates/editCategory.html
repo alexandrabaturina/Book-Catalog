@@ -1,8 +1,12 @@
 <html>
 
-<body>
-{% include "header.html" %}
+<head>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
 
+<body>
+
+{% include "header.html" %}
 <div class="pane">
 
 <h1> Edit Author </h1>
@@ -13,6 +17,7 @@
 <input type='submit' value='Edit'>
 </form>
 
+</div>
 </body>
 
 </html>
