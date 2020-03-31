@@ -18,6 +18,10 @@ engine = create_engine('sqlite:///catalogitems.db',
     connect_args={'check_same_thread': False}, echo=True)
 Base.metadata.bind = engine
 
+# Declare client ID
+CLIENT_ID = json.loads(
+    open('client_secrets.json', 'r').read())['web']['client_id']
+
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
