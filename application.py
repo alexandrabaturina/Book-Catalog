@@ -14,6 +14,7 @@ import requests
 
 app = Flask(__name__)
 
+# Connect to database and create database session
 engine = create_engine('sqlite:///catalogitems.db',
     connect_args={'check_same_thread': False}, echo=True)
 Base.metadata.bind = engine
@@ -184,6 +185,7 @@ def categoriesJSON():
     categories = session.query(Category).all()
     return jsonify(categories=[r.serialize for r in categories])
 
+
 # Show all categories
 @app.route('/')
 @app.route('/category/')
@@ -191,9 +193,12 @@ def showCategories():
     categories = session.query(Category).all()
     return render_template('categories.html', categories=categories)
 
+
 # Create a new category
 @app.route('/category/new/', methods=['GET', 'POST'])
 def newCategory():
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         newCategory = Category(name=request.form['name'],
                                 user_id = login_session['user_id'])
@@ -203,9 +208,12 @@ def newCategory():
     else:
         return render_template('newCategory.html')
 
+
 # Edit a category
 @app.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
 def editCategory(category_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     editedCategory = session.query(
         Category).filter_by(id=category_id).one()
     if request.method == 'POST':
@@ -215,9 +223,12 @@ def editCategory(category_id):
     else:
         return render_template('editCategory.html', category=editedCategory)
 
+
 # Delete a category
 @app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
 def deleteCategory(category_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     categoryToDelete = session.query(
         Category).filter_by(id=category_id).one()
     if request.method == 'POST':
@@ -228,7 +239,6 @@ def deleteCategory(category_id):
     else:
         return render_template(
             'deleteCategory.html', category=categoryToDelete)
-
 
 # Show a list of items in a category
 @app.route('/category/<int:category_id>/')
@@ -243,7 +253,9 @@ def showList(category_id):
 @app.route(
     '/category/<int:category_id>/list/new/', methods=['GET', 'POST'])
 def newCatalogItem(category_id):
-        if request.method == 'POST':
+    if 'username' not in login_session:
+        return redirect('/login')
+    if request.method == 'POST':
         newItem = CatalogItem(name=request.form['name'],
                             description=request.form['description'],
                             category_id=category_id)
@@ -259,6 +271,8 @@ def newCatalogItem(category_id):
 @app.route('/category/<int:category_id>/list/<int:list_id>/edit',
            methods=['GET', 'POST'])
 def editCatalogItem(category_id, list_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     editedItem = session.query(CatalogItem).filter_by(id=list_id).one()
     if request.method == 'POST':
         if request.form['name']:
@@ -273,10 +287,13 @@ def editCatalogItem(category_id, list_id):
         return render_template('edititem.html', category_id=category_id,
                                 list_id=list_id, item=editedItem)
 
+
 # Delete a category item
 @app.route('/category/<int:category_id>/list/<int:list_id>/delete',
            methods=['GET', 'POST'])
 def deleteCatalogItem(category_id, list_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     itemToDelete = session.query(CatalogItem).filter_by(id=list_id).one()
     if request.method == 'POST':
         session.delete(itemToDelete)
@@ -292,6 +309,7 @@ def getUserID(email):
         return user.id
     except:
         return None
+
 
 def getUserInfo(user_id):
     """Get user informations."""
@@ -309,8 +327,6 @@ def createUser(login_session):
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
     return user.id
-
-app = Flask(__name__)
 
 if __name__ == '__main__':
     app.secret_key = 'wnod21id90192djR222E2111ccqqqwjncnwi12111'
