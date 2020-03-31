@@ -288,5 +288,6 @@ def deleteCatalogItem(category_id, list_id):
 app = Flask(__name__)
 
 if __name__ == '__main__':
+    app.secret_key = 'wnod21id90192djR222E2111ccqqqwjncnwi12111'
     app.debug = True
     app.run(host='0.0.0.0', port=8000)
