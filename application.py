@@ -4,12 +4,23 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, CatalogItem
 
+from flask import session as login_session
+import random, string
+
 engine = create_engine('sqlite:///catalogitems.db',
     connect_args={'check_same_thread': False}, echo=True)
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+# Create anti-forgery state token
+@app.route('/login')
+def showLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in range(32))
+    login_session['state'] = state
+    return render_template('login.html', STATE=state)
 
 # JSON APIs to view information
 @app.route('/category/<int:category_id>/JSON')
