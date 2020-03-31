@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+​
+<head>
+    <link href='//fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+​
+    <!--google -->
+    <script src="//apis.google.com/js/platform.js?onload=init" async defer>
+    </script>`
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="489474672499-v9uhsrfeimjraj8hktb0qr9roi3jc3dd.apps.googleusercontent.com">
+​
+</head>
+​
+<body>
+    <div class="container">
+​
+        <!-- start Google Start Login -->
+        <h1>Sign with your Google Account</h1>
+​
+        <button class="g-signin2" id="signinButton">Sign in with
+            Google</button>
+        <script>
+        function init() {
+              gapi.load('auth2', function () {
+                console.log("loaded auth2")
+                auth2 = gapi.auth2.init({
+                  client_id: '489474672499-v9uhsrfeimjraj8hktb0qr9roi3jc3dd.apps.googleusercontent.com',
+                  scope: 'profile email'
+                });
+
+                $("#signinButton").click(function () {
+                  console.log("clicked")
+                  auth2.grantOfflineAccess({
+                    'redirect_uri': 'postmessage'
+                  }).then(offlineAccess);
+                });
+              });
+            }
+
+            function offlineAccess(resp) {
+              console.log("in offline access")
+              var auth_code = resp.code;
+              console.log(resp);
+              $.ajax({
+                    type: "POST",
+                    url: "{{url_for('gconnect')}}?state={{STATE}}",
+                    processData: false,
+                    contentType: 'application/octet-stream; charset=utf-8',
+                    data: auth_code,
+                    success: function (result) {
+                        $("body").html(result);
+                        setTimeout(function () {
+                            window.location.href = '/category'
+                        }, 3000);
+                      }
+                });
+              }
+        </script>
+​
+        <!-- start Google End Login -->
+​
+    </div>
+</body>
+​
+</html>
