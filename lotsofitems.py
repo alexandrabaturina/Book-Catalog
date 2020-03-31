@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import Category, Base, CatalogItem
+from database_setup import Category, Base, CatalogItem, User
 
 engine = create_engine('sqlite:///catalogitems.db')
 Base.metadata.bind = engine
@@ -10,12 +10,21 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
+#Create dummy user
+user1 = User(name="John Johnson",
+email="JohnJohnson@gmail.com", picture='https://f1.pngfuel.com/png/110/' +\
+'885/214/green-circle-child-avatar-user-profile-smile-boy-cartoon-face-png-' +\
+'clip-art.png')
+
+session.add(user1)
+session.commit()
+
+
 #Books of John Grisham (= Category1)
-category1 = Category(name = "John Grisham")
+category1 = Category(user_id = 1, name = "John Grisham")
 
 session.add(category1)
 session.commit()
-
 
 catalogItem1 = CatalogItem(
     name = "Camino Island",
@@ -70,8 +79,9 @@ catalogItem4 = CatalogItem(
 session.add(catalogItem4)
 session.commit()
 
+
 #Books of Dale Carnegie (= Category 2)
-category2 = Category(name = "Dale Carnegie")
+category2 = Category(user_id = 1, name = "Dale Carnegie")
 
 session.add(category2)
 session.commit()
@@ -109,8 +119,9 @@ catalogItem3 = CatalogItem(name = "How to Stop Worrying and Start Living",
 session.add(catalogItem3)
 session.commit()
 
+
 #Books of Jamie Oliver (= Category 3)
-category3 = Category(name = "Jamie Oliver")
+category3 = Category(user_id = 1, name = "Jamie Oliver")
 
 session.add(category3)
 session.commit()
