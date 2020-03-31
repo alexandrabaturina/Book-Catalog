@@ -293,6 +293,11 @@ def getUserID(email):
     except:
         return None
 
+def getUserInfo(user_id):
+    """Get user informations."""
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
 app = Flask(__name__)
 
 if __name__ == '__main__':
