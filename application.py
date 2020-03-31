@@ -1,11 +1,18 @@
 from flask import Flask, render_template, request, redirect, jsonify
-from flast import url_for
+from flask import url_for, make_response
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Category, CatalogItem
+from database_setup import Base, Category, CatalogItem, User
 
 from flask import session as login_session
-import random, string
+import random, string, json
+
+from oauth2client.client import FlowExchangeError
+from oauth2client.client import flow_from_clientsecrets
+import httplib2
+import requests
+
+app = Flask(__name__)
 
 engine = create_engine('sqlite:///catalogitems.db',
     connect_args={'check_same_thread': False}, echo=True)
