@@ -5,9 +5,10 @@ The goal of the project is to develop a RESTful web application using the ***Fla
 The **Book Catalog** aplication is built as the second project for [Full Stack Web Developer Nanodegree Program](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044) provided by Coursera.
 
 ## Features
-
-**Book Catalog** (**application.py**) is a Python-based application that provides a list of books within a variety of authors. It implements a third-party authentication & authorization service via *Google Accounts* and allows registered users to add, edit, and delete their own records.
-
+The **Book Catalog** application has the following features.
+* Providing a list of books within a variety of authors
+* Implementing a third-party authentication & authorization service via *Google Accounts*
+* Allowing registered users to add, edit, and delete their own records
 ## Getting Started
 ### Prerequisites
 To use Book Catalog application, the following software is required:
