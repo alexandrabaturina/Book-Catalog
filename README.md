@@ -1,5 +1,13 @@
 # Book Catalog
-Book Catalog application (application.py) is a Python-based application that provides a list of books within a variety of authors. It implements a third-party authentication & authorization service via Google Accounts and allows registered users to add, edit, and delete their own records.
+## Overview
+The goal of the project is to develop a RESTful web application using the ***Flask*** framework as well as implement third-party ***OAuth*** authentication. It is also intended to get practice with the various HTTP methods and *CRUD*(create, read, update, and delete) operations.
+
+The **Book Catalog** aplication is built as the second project for [Full Stack Web Developer Nanodegree Program](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044) provided by Coursera.
+
+## Features
+
+**Book Catalog** (**application.py**) is a Python-based application that provides a list of books within a variety of authors. It implements a third-party authentication & authorization service via *Google Accounts* and allows registered users to add, edit, and delete their own records.
+
 ## Getting Started
 ### Prerequisites
 To use Book Catalog application, the following software is required:
