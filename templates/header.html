@@ -1,13 +1,26 @@
-<div><h1>Book Catalog</h1></div>
-<div>
-	<a href="{{url_for('showCategories')}}">Show All Authors</a> 	<br>
+<div class="header">
+	<nav>
+		<ul class="nav-menu">
+			{% if 'username' not in session %}
+				<li>
+					<a href="{{url_for('showCategories')}}">Show All Authors</a>
+				</li>
+				<li>
+					<a href="{{url_for('showLogin')}}" > Login with Google </a>
+				</li>
+			{% endif %}
 
-	{% if 'username' not in session %}
-		<p><a href="{{url_for('showLogin')}}" > Login with Google </a></p>
-	{% endif %}
+			{% if 'username' in session %}
+				<li>Welcome {{session['username']}}</li>
+				<li>
+					<a href="{{url_for('showCategories')}}">Show All Authors</a>
+				</li>
+				<li>
+					<a href="{{url_for('gdisconnect')}}">Logout</a>
+				</li>
+			{% endif %}
+		</ul>
+	</nav>
 
-	{% if 'username' in session %}
-		<a href="{{url_for('gdisconnect')}}"> Welcome {{session['username']}} <br>Logout</a>
-	{% endif %}
-
+	<h1>Book Catalog</h1>
 </div>
