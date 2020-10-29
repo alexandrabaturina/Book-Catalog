@@ -1,24 +1,27 @@
 <div class="header">
 	<nav>
 		<ul class="nav-menu">
+			
+			{% if 'username' in session %}
+				<li>Welcome, {{session['username']}}!</li>
+			{% endif %}
+
+				<li>
+					<a class="nav-link" href="{{url_for('showCategories')}}">Show All Authors</a>
+				</li>
+
 			{% if 'username' not in session %}
 				<li>
-					<a href="{{url_for('showCategories')}}">Show All Authors</a>
-				</li>
-				<li>
-					<a href="{{url_for('showLogin')}}" > Login with Google </a>
+					<a class="nav-link" href="{{url_for('showLogin')}}" > Login with Google </a>
 				</li>
 			{% endif %}
 
 			{% if 'username' in session %}
-				<li>Welcome {{session['username']}}</li>
 				<li>
-					<a href="{{url_for('showCategories')}}">Show All Authors</a>
-				</li>
-				<li>
-					<a href="{{url_for('gdisconnect')}}">Logout</a>
+					<a class="nav-link" href="{{url_for('gdisconnect')}}">Logout</a>
 				</li>
 			{% endif %}
+
 		</ul>
 	</nav>
 

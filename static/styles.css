@@ -1,23 +1,35 @@
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #fafafa;
-  color: #3b4b60;
+  background-color: #f1f1f0;
+  font-weight: 500;
+  font-size: 1.2em;
 }
 
 h1, h2 {
   font-family: 'Lora', serif;
+  text-align: center;
 }
 
 h1 {
   font-size: 3.5em;
   margin-top: 0;
   padding-bottom: 10px;
-  margin-bottom: 20px;
   border-bottom: 2px solid #a77b3f;
 }
 
 h2 {
   font-size: 2.5em;
+}
+
+h3 {
+  color: #35838d;
+  font-size: 1.5em;
+  padding-bottom: 0px;
+  margin-bottom: 5px;
+}
+
+p {
+  color: #012e33;
 }
 
 a {
@@ -27,20 +39,21 @@ a {
   font-weight: 600;
 }
 
+.new {
+  color: #35838d;
+}
+
 .pane {
+  width: 80%;
   position:absolute;
-  left: 25%;
-  border: 2px solid;
+  left: 10%;
   border-radius: 25px;
-  padding: 5px;
-  margin: 5px;
-  border-color: #999999;
-  background-color: #333333;
-  width: 50%;
+  background-color: #c6cdda;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .header {
-  /* left:50%; */
   text-align: center;
 }
 
@@ -48,6 +61,7 @@ a {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  margin-bottom: 0px;
 }
 
 ul {
@@ -56,4 +70,48 @@ ul {
 
 li {
   padding: 10px 15px 0 15px;
+}
+
+.nav-link {
+  color: #35838d;
+}
+
+.edit-delete {
+  color: #a77b3f;
+  font-size: 0.9em;
+}
+
+.author {
+  padding-bottom: 15px;
+}
+
+.book-info {
+  padding-bottom: 10px;
+  text-align: justify;
+  border-bottom: 1px solid #35838d;
+  margin-bottom: 50px;
+
+}
+
+.book-info:last-child {
+  border-bottom: none;
+}
+
+.book-info h3 {
+  color: #012e33;
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.edit-book-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.edit-book-info a{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 20px;
 }
