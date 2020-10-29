@@ -4,22 +4,37 @@
   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
   <link href="https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap" rel="stylesheet">
 </head>
+
 <body>
   {% include "header.html" %}
   <div class = "pane">
-  <h1> Edit Book</h1>
+    <h2> Edit Book</h2>
 
-<form action="#" method = 'post'>
+    <form class="form-edit-book" action="#" method = 'post'>
 
+      <div id="book-title">
+        <label for="book-name">Title:</label>
+        <input type ='text' name='book-name' id="book-name" value='{{item.name}}'>
 
-<p>Title:</p>
-  <input type ='text' size='103' name='name' placeholder = '{{item.name }}'>
-<p>Description:</p>
-  <textarea cols="100" rows="15" input type ='text' name='description' placeholder = '{{item.description}}'></textarea>
+        {% if error_title %}
+          <div class="form-error">
+            This field can not be empty. Please specify book title.
+          </div>
+        {% endif %}
 
-<p><input type='submit' value='Edit'></p>
+      </div>
 
-</form>
-</div>
+      <div id="book-description">
+        <label for="description">Description:</label>
+        <textarea id="description" name='description'>{{item.description}}</textarea>
+      </div>
+
+      <div class="edit-buttons">
+        <input type="submit" name="submit-button" value="Save">
+        <input type="submit" name="submit-button" value="Cancel">
+      </div>
+
+    </form>
+  </div>
 </body>
 </html>

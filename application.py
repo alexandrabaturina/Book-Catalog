@@ -279,9 +279,20 @@ def editCatalogItem(category_id, list_id):
     if 'username' not in login_session:
         return redirect('/login')
     editedItem = session.query(CatalogItem).filter_by(id=list_id).one()
+
     if request.method == 'POST':
-        if request.form['name']:
-            editedItem.name = request.form['name']
+
+        if request.form['submit-button'] == 'Cancel':
+            return redirect(url_for('showList', category_id=category_id))
+
+        if not request.form['book-name']:
+            return render_template('edititem.html',
+                                    category_id=category_id,
+                                    list_id=list_id,
+                                    item=editedItem,
+                                    error_title=True)
+        if request.form['book-name']:
+            editedItem.name = request.form['book-name']
         if request.form['description']:
             editedItem.description = request.form['description']
         session.add(editedItem)
@@ -289,8 +300,10 @@ def editCatalogItem(category_id, list_id):
         return redirect(url_for('showList', category_id=category_id))
     else:
 
-        return render_template('edititem.html', category_id=category_id,
-                                list_id=list_id, item=editedItem)
+        return render_template('edititem.html',
+                                category_id=category_id,
+                                list_id=list_id,
+                                item=editedItem)
 
 
 # Delete a category item
