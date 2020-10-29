@@ -6,15 +6,15 @@
 </head>
 
 <body>
-{% include "header.html" %}
-<div class="pane">
-<h1>Delete Book</h1>
-<p>Are you sure you want to delete {{item.name}}?</p>
-<form action="#" method = 'post'>
-<input type='submit', value = 'Delete'>
-
-</form>
-</div>
+  {% include "header.html" %}
+  <div class="pane">
+    <h2>Delete Book</h2>
+    <p>Are you sure you want to delete <strong>{{item.name}}</strong>?</p>
+    <form action="#" method = 'post'>
+      <input type="submit" name="submit-button" value="No">
+      <input type="submit" name="submit-button" value = "Delete">
+    </form>
+  </div>
 </body>
 
 </html>

@@ -295,7 +295,11 @@ def deleteCatalogItem(category_id, list_id):
     if 'username' not in login_session:
         return redirect('/login')
     itemToDelete = session.query(CatalogItem).filter_by(id=list_id).one()
+
     if request.method == 'POST':
+        if request.form['submit-button'] == 'No':
+            return redirect(url_for('showList', category_id=category_id))
+
         session.delete(itemToDelete)
         session.commit()
         return redirect(url_for('showList', category_id=category_id))
