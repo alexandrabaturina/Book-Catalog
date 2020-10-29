@@ -1,24 +1,31 @@
 <html>
 
 <head>
-  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+  <link rel=stylesheet type=text/css href="{{url_for('static', filename='styles.css')}}">
   <link href="https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-{% include "header.html" %}
-<div class="pane">
+  {% include "header.html" %}
+  <div class="pane">
+    <h2>Edit Author</h2>
 
-<h1> Edit Author </h1>
+      <form class="form-edit-author" action="{{url_for('editCategory',category_id = category.id)}}" method="post">
+        <input type ="text" name="author-name" placeholder="{{category.name}}">
 
-<form action="{{ url_for('editCategory',category_id = category.id)}}" method = 'post'>
-<p>Name:</p>
-<input type ='text' size='30' name='name' placeholder = '{{category.name }}'>
-<input type='submit' value='Edit'>
-</form>
+        {% if editing_error %}
+          <div class="form-error">
+            This field can not be empty. Please specify author name.
+          </div>
+        {% endif %}
 
-</div>
+        <div class="edit-buttons">
+          <input type="submit" name="submit-button" value="Save">
+          <input type="submit" name="submit-button" value="Cancel">
+        </div>
+      </form>
+
+  </div>
 </body>
-
 </html>

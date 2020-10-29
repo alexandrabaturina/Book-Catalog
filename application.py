@@ -217,9 +217,12 @@ def editCategory(category_id):
     editedCategory = session.query(
         Category).filter_by(id=category_id).one()
     if request.method == 'POST':
-        if request.form['name']:
-            editedCategory.name = request.form['name']
+        if request.form['submit-button'] == 'Cancel':
             return redirect(url_for('showCategories'))
+        if not request.form['author-name']:
+            return render_template('editCategory.html', category=editedCategory, editing_error=True)
+        editedCategory.name = request.form['author-name']
+        return redirect(url_for('showCategories'))
     else:
         return render_template('editCategory.html', category=editedCategory)
 
