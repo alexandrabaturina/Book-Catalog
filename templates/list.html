@@ -1,28 +1,29 @@
 <html>
 
 <head>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	<link href="https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap" rel="stylesheet">
 </head>
 
 	<body>
 		{% include "header.html" %}
 		<div class = 'pane'>
-		<h1>Books by {{ category.name }}</h1>
+		<h2>Books by {{ category.name }}</h2>
 
     {% if items !=[] %}
 
-		<p><a href = "{{url_for('newCatalogItem', category_id = category.id )}}">	Add New Book</a></p>
+		<a class="new" href = "{{url_for('newCatalogItem', category_id = category.id )}}">	+ New Book</a>
 
 		{% for i in items %}
+		<div class="book-info">
+			<h3>{{i.name}}</h3>
+			<p>{{i.description}}</p>
+			<div class="edit-book-info">
+				<a class="edit-delete" href='{{url_for('editCatalogItem', category_id = category.id, list_id=i.id ) }}' >Edit</a>
+				<a class="edit-delete" href='{{url_for('deleteCatalogItem', category_id = category.id, list_id=i.id ) }}' >Delete</a>
+			</div>
+		</div>
 
-		<h2>{{i.name}}</h2>
-
-		<p>Description: {{i.description}}</p>
-
-		<a href='{{url_for('editCatalogItem', category_id = category.id, list_id=i.id ) }}' >Edit</a> </br>
-		<a href='{{url_for('deleteCatalogItem', category_id = category.id, list_id=i.id ) }}' >Delete</a>
-</br>
-</br>
 		{% endfor %}
 
 		{% else %}
