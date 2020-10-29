@@ -1,29 +1,27 @@
 <html>
 
 <head>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+  <link rel=stylesheet href="{{ url_for('static', filename='styles.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap" rel="stylesheet">
 </head>
-
 
 <body>
 
-{% include "header.html" %}
-<div class = 'pane'>
-<h1>Authors</h1>
+  {% include "header.html" %}
 
-<p><a href="{{url_for('newCategory')}}" > Add New Author</a></p>
+  <div class = "pane">
+    <h2>Authors</h2>
+    <a class="new" href="{{url_for('newCategory')}}" > + New Author</a>
 
-{% for category in categories %}
+    {% for category in categories %}
+      <div class="author">
+        <a href = "{{url_for('showList', category_id = category.id)}}"><h3>{{category.name}}</h3></a>
+        <a class="edit-delete" href = "{{url_for('editCategory',category_id = category.id)}}">Edit</a>
+        <a class="edit-delete" href = "{{url_for('deleteCategory',category_id = category.id)}}">Delete</a>
+      </div>
+    {% endfor %}
 
-<a href = "{{url_for('showList', category_id = category.id)}}"> <p> <h2>{{category.name}}</h2></p></a>
-<a href = "{{url_for('editCategory',category_id = category.id)}}">Edit</a>
-<a href = "{{url_for('deleteCategory',category_id = category.id)}}">Delete</a>
-
-{% endfor %}
-
-</br></br>
-
-</div>
+  </div>
 </body>
 
 </html>
