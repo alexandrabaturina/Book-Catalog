@@ -1,0 +1,82 @@
+input[type=submit] {
+  font-size: 0.8em;
+  background-color: #35838d;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+  width: 70px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+input[name="author-name"] {
+  font-size: 1em;
+  width: 400px;
+  height: 30px;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+input[name="book-name"] {
+  font-size: 1em;
+  width: 700px;
+}
+
+textarea {
+  width: 700px;
+  height: 300px;
+  margin-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1em;
+}
+
+label {
+  padding-bottom: 5px;
+  font-weight: 600;
+}
+
+.form-delete-book,
+.form-delete-author {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.form-edit-author,
+.form-edit-book {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.edit-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.delete-book p,
+.delete-author p{
+  text-align: center;
+}
+
+.form-error {
+  color: #d50102;
+  font-size: 0.9em;
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
+
+#book-title,
+#book-description {
+  display: flex;
+  flex-direction: column;
+}
+
+#book-description {
+  margin-top: 20px;
+  font-size: 1em;
+  font-style:
+}
