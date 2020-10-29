@@ -7,16 +7,19 @@
 
 <body>
 
-{% include "header.html" %}
+  {% include "header.html" %}
 
-<div class = "pane">
-<h1>Delete Author</h1>
-<p>Are you sure you want to delete {{category.name}}?</p>
+  <div class = "pane">
+    <h2>Delete Author</h2>
+    <div class="delete-author">
+      <p>Are you sure you want to delete <strong>{{category.name}}</strong> from catalog?</p>
 
-<form action="#" method = 'post'>
-<input type='submit', value = 'Delete'>
-</form>
+      <form class="form-delete-author" action="#" method = 'post'>
+        <input type="submit" name="submit-button" value="No">
+        <input type="submit" name="submit-button" value = "Delete">
+      </form>
 
-</div>
+    </div>
+  </div>
 </body>
 </html>

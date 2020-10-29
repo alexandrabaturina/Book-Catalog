@@ -229,9 +229,11 @@ def editCategory(category_id):
 def deleteCategory(category_id):
     if 'username' not in login_session:
         return redirect('/login')
-    categoryToDelete = session.query(
-        Category).filter_by(id=category_id).one()
+    categoryToDelete = session.query(Category).filter_by(id=category_id).one()
+
     if request.method == 'POST':
+        if request.form['submit-button'] == 'No':
+            return redirect(url_for('showCategories', category_id=category_id))
         session.delete(categoryToDelete)
         session.commit()
         return redirect(
