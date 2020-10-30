@@ -10,15 +10,16 @@ input[type=submit] {
   margin-right: 10px;
 }
 
-input[name="author-name"] {
+input[name="author-name"],
+input[name="new-author-name"]{
   font-size: 1em;
   width: 400px;
   height: 30px;
   padding: 5px;
-  margin-bottom: 20px;
 }
 
-input[name="book-name"] {
+input[name="book-name"],
+input[name="title-to-add"] {
   font-size: 1em;
   width: 700px;
 }
@@ -45,7 +46,9 @@ label {
 }
 
 .form-edit-author,
-.form-edit-book {
+.form-edit-book,
+.form-add-author,
+.form-add-book {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,6 +58,7 @@ label {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-top: 20px;
 }
 
 .delete-book p,
@@ -69,14 +73,22 @@ label {
   margin-top: 5px;
 }
 
-#book-title,
-#book-description {
+.book-title,
+.book-description {
   display: flex;
   flex-direction: column;
 }
 
-#book-description {
+.book-description {
   margin-top: 20px;
   font-size: 1em;
-  font-style:
+}
+
+#author-description {
+  display: flex;
+  flex-direction: row;
+}
+
+#author-description label {
+  margin-right: 10px;
 }
