@@ -18,7 +18,13 @@
 			{% for item in items %}
 				<div class="book-info">
 					<h3>{{item.name}}</h3>
-					<p>{{item.description}}</p>
+
+					{% if item.description %}
+						<p>{{item.description}}</p>
+					{% else %}
+						<p>No description provided for this book yet.</p>
+					{% endif %}
+
 					<div class="edit-book-info">
 						<a class="edit-delete" href='{{url_for('editCatalogItem', category_id=category.id, list_id=item.id ) }}'>
 							Edit</a>
