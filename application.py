@@ -204,6 +204,9 @@ def newCategory():
         if request.form['submit-button'] == 'Cancel':
             return redirect(url_for('showCategories'))
 
+        if not request.form['new-author-name']:
+            return render_template('newCategory.html', empty_author_name=True)
+
         newCategory = Category(name=request.form['new-author-name'],
                                 user_id = login_session['user_id'])
         session.add(newCategory)

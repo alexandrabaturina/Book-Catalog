@@ -15,6 +15,13 @@
 				<label for="new-author-name">Author name:</label>
 				<input type='text' id='new-author-name' name='new-author-name'>
 			</div>
+
+			{% if empty_author_name %}
+				<div class="form-error">
+					This field can not be empty. Please specify author's name.
+				</div>
+			{% endif %}
+
 			<div class="edit-buttons">
 				<input type="submit" name="submit-button" value="Save">
 				<input type="submit" name="submit-button" value="Cancel">
