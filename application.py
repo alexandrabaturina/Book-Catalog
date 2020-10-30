@@ -271,7 +271,13 @@ def newCatalogItem(category_id):
     if request.method == 'POST':
 
         if request.form['submit-button'] == 'Cancel':
-            render_template('newitem.html',
+            return redirect(url_for('showList', category_id=category_id))
+
+        if not request.form['title-to-add']:
+            print("************")
+            print("Title is empty")
+            print("************")
+            return render_template('newitem.html',
                             category_id=category_id,
                             empty_title=True)
 
