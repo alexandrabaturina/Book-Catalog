@@ -267,9 +267,16 @@ def showList(category_id):
 def newCatalogItem(category_id):
     if 'username' not in login_session:
         return redirect('/login')
+
     if request.method == 'POST':
-        newItem = CatalogItem(name=request.form['name'],
-                            description=request.form['description'],
+
+        if request.form['submit-button'] == 'Cancel':
+            render_template('newitem.html',
+                            category_id=category_id,
+                            empty_title=True)
+
+        newItem = CatalogItem(name=request.form['title-to-add'],
+                            description=request.form['description-to-add'],
                             category_id=category_id)
         session.add(newItem)
         session.commit()

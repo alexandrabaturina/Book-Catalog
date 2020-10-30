@@ -4,21 +4,31 @@
 	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
 	<link href="https://fonts.googleapis.com/css2?family=Lora&family=Roboto&display=swap" rel="stylesheet">
 </head>
-<body>
-{% include "header.html" %}
-<div class = 'pane'>
-<h1>New Book</h1>
 
-<form action="#" method = 'post'>
+	<body>
+		{% include "header.html" %}
+		<div class='pane'>
+		<h2>Add Book</h2>
 
+		<form class="form-add-book" action="#" method='post'>
 
-	<p>Title:</p>
-		<input type ='text' size='103' name='name'>
-	<p>Description:</p>
-		<textarea cols="100" rows="15" input type ='text' name='description'></textarea>
-<p><input type='submit' value='Add'></p>
+				<div class="book-title">
+	        <label for="title-to-add">Title:</label>
+					<input type ='text' name='title-to-add' id='title-to-add'>
+			  </div>
 
-</form>
-</div>
-</body>
+				<div class="book-description">
+					<label for="description-to-add">Description:</label>
+					<textarea input type ='text' id='description-to-add' name='description-to-add'></textarea>
+				</div>
+
+				<div class="edit-buttons">
+					<input type="submit" name="submit-button" value="Save">
+					<input type="submit" name="submit-button" value="Cancel">
+				</div>
+
+		</form>
+
+		</div>
+	</body>
 </html>
