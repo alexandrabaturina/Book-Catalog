@@ -235,7 +235,7 @@ def deleteCategory(category_id):
     categoryToDelete = session.query(Category).filter_by(id=category_id).one()
 
     if request.method == 'POST':
-        if request.form['submit-button'] == 'No':
+        if request.form['submit-button'] == 'Cancel':
             return redirect(url_for('showCategories', category_id=category_id))
         session.delete(categoryToDelete)
         session.commit()
@@ -315,7 +315,7 @@ def deleteCatalogItem(category_id, list_id):
     itemToDelete = session.query(CatalogItem).filter_by(id=list_id).one()
 
     if request.method == 'POST':
-        if request.form['submit-button'] == 'No':
+        if request.form['submit-button'] == 'Cancel':
             return redirect(url_for('showList', category_id=category_id))
 
         session.delete(itemToDelete)

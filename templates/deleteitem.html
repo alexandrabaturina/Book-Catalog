@@ -9,11 +9,15 @@
   {% include "header.html" %}
   <div class="pane">
     <h2>Delete Book</h2>
-    <p>Are you sure you want to delete <strong>{{item.name}}</strong>?</p>
-    <form action="#" method = 'post'>
-      <input type="submit" name="submit-button" value="No">
-      <input type="submit" name="submit-button" value = "Delete">
-    </form>
+    <div class="delete-book">
+      <p>Are you sure you want to delete <strong>{{item.name}}</strong> from catalog?</p>
+
+      <form class="form-delete-book" action="#" method = 'post'>
+        <input type="submit" name="submit-button" value = "Delete">
+        <input type="submit" name="submit-button" value="Cancel">
+      </form>
+
+    </div>
   </div>
 </body>
 
