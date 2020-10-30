@@ -11,23 +11,25 @@
 	<div class='pane'>
 		<h2>Books by {{ category.name }}</h2>
 
-    {% if items !=[] %}
-			<a class="new" href = "{{url_for('newCatalogItem', category_id = category.id )}}">	+ New Book</a>
+		<a class="new" href = "{{url_for('newCatalogItem', category_id = category.id )}}">+ New Book</a>
 
-			{% for i in items %}
+    {% if items %}
+
+			{% for item in items %}
 				<div class="book-info">
-					<h3>{{i.name}}</h3>
-					<p>{{i.description}}</p>
+					<h3>{{item.name}}</h3>
+					<p>{{item.description}}</p>
 					<div class="edit-book-info">
-						<a class="edit-delete" href='{{url_for('editCatalogItem', category_id = category.id, list_id=i.id ) }}' >Edit</a>
-						<a class="edit-delete" href='{{url_for('deleteCatalogItem', category_id = category.id, list_id=i.id ) }}' >Delete</a>
+						<a class="edit-delete" href='{{url_for('editCatalogItem', category_id=category.id, list_id=item.id ) }}'>
+							Edit</a>
+						<a class="edit-delete" href='{{url_for('deleteCatalogItem', category_id = category.id, list_id=item.id)}}'>
+							Delete</a>
 					</div>
 				</div>
 		{% endfor %}
 
 		{% else %}
-			<a class="new" href = "{{url_for('newCatalogItem', category_id = category.id )}}">+ New Book</a>
-			<p> You currently have no books of this author. <p>
+			<p>You don't have books of this author yet.<p>
 		{% endif %}
 
 </div>
