@@ -3,12 +3,14 @@ from flask import url_for, make_response
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, CatalogItem, User
-
 from flask import session as login_session
-import random, string, json
 
 from oauth2client.client import FlowExchangeError
 from oauth2client.client import flow_from_clientsecrets
+
+import random
+import string
+import json
 import httplib2
 import requests
 
@@ -28,7 +30,7 @@ session = DBSession()
 
 # Create anti-forgery state token
 @app.route('/login')
-def showLogin():
+def show_login():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in range(32))
     login_session['state'] = state
@@ -167,7 +169,7 @@ def gdisconnect():
 
 # JSON APIs to view information
 @app.route('/category/<int:category_id>/JSON')
-def categoryJSON(category_id):
+def show_category_json(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     items = session.query(CatalogItem).filter_by(
         category_id=category_id).all()
@@ -175,13 +177,13 @@ def categoryJSON(category_id):
 
 
 @app.route('/category/<int:category_id>/<int:item_id>/JSON')
-def categoryItemJSON(category_id, item_id):
+def show_category_item_json(category_id, item_id):
     Category_Item = session.query(CatalogItem).filter_by(id=item_id).one()
     return jsonify(Category_Item=Category_Item.serialize)
 
 
 @app.route('/category/JSON')
-def categoriesJSON():
+def show_categories_json():
     categories = session.query(Category).all()
     return jsonify(categories=[r.serialize for r in categories])
 
@@ -189,92 +191,92 @@ def categoriesJSON():
 # Show all categories
 @app.route('/')
 @app.route('/category/')
-def showCategories():
+def show_categories():
     categories = session.query(Category).order_by(Category.name).all()
-    return render_template('categories.html', categories=categories)
+    return render_template('authors-list.html', categories=categories)
 
 
 # Create a new category
 @app.route('/category/new/', methods=['GET', 'POST'])
-def newCategory():
+def add_category():
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
 
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('showCategories'))
+            return redirect(url_for('show_categories'))
 
         if not request.form['new-author-name']:
-            return render_template('newCategory.html', empty_author_name=True)
+            return render_template('add-author.html', empty_author_name=True)
 
         newCategory = Category(name=request.form['new-author-name'],
                                 user_id = login_session['user_id'])
         session.add(newCategory)
         session.commit()
-        return redirect(url_for('showCategories'))
+        return redirect(url_for('show_categories'))
     else:
-        return render_template('newCategory.html')
+        return render_template('add-author.html')
 
 
 # Edit a category
 @app.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
-def editCategory(category_id):
+def edit_category(category_id):
     if 'username' not in login_session:
         return redirect('/login')
     editedCategory = session.query(
         Category).filter_by(id=category_id).one()
     if request.method == 'POST':
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('showCategories'))
+            return redirect(url_for('show_categories'))
         if not request.form['author-name']:
-            return render_template('editCategory.html', category=editedCategory, editing_error=True)
+            return render_template('edit-author.html', category=editedCategory, editing_error=True)
         editedCategory.name = request.form['author-name']
-        return redirect(url_for('showCategories'))
+        return redirect(url_for('show_categories'))
     else:
-        return render_template('editCategory.html', category=editedCategory)
+        return render_template('edit-author.html', category=editedCategory)
 
 
 # Delete a category
 @app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
-def deleteCategory(category_id):
+def delete_category(category_id):
     if 'username' not in login_session:
         return redirect('/login')
     categoryToDelete = session.query(Category).filter_by(id=category_id).one()
 
     if request.method == 'POST':
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('showCategories', category_id=category_id))
+            return redirect(url_for('show_categories', category_id=category_id))
         session.delete(categoryToDelete)
         session.commit()
         return redirect(
-            url_for('showCategories', category_id=category_id))
+            url_for('show_categories', category_id=category_id))
     else:
         return render_template(
-            'deleteCategory.html', category=categoryToDelete)
+            'delete-author.html', category=categoryToDelete)
 
 # Show a list of items in a category
 @app.route('/category/<int:category_id>/')
 @app.route('/category/<int:category_id>/list/')
-def showList(category_id):
+def show_list(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     items = session.query(CatalogItem).filter_by(
         category_id=category_id).order_by(CatalogItem.name).all()
-    return render_template('list.html', items=items, category=category)
+    return render_template('books-list.html', items=items, category=category)
 
 # Create a new category item
 @app.route(
     '/category/<int:category_id>/list/new/', methods=['GET', 'POST'])
-def newCatalogItem(category_id):
+def add_catalog_item(category_id):
     if 'username' not in login_session:
         return redirect('/login')
 
     if request.method == 'POST':
 
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('showList', category_id=category_id))
+            return redirect(url_for('show_list', category_id=category_id))
 
         if not request.form['title-to-add']:
-            return render_template('newitem.html',
+            return render_template('add-book.html',
                             category_id=category_id,
                             empty_title=True)
 
@@ -284,15 +286,15 @@ def newCatalogItem(category_id):
         session.add(newItem)
         session.commit()
 
-        return redirect(url_for('showList', category_id=category_id))
+        return redirect(url_for('show_list', category_id=category_id))
     else:
-        return render_template('newitem.html', category_id=category_id)
+        return render_template('add-book.html', category_id=category_id)
 
 
 # Edit a category item
 @app.route('/category/<int:category_id>/list/<int:list_id>/edit',
            methods=['GET', 'POST'])
-def editCatalogItem(category_id, list_id):
+def edit_catalog_item(category_id, list_id):
     if 'username' not in login_session:
         return redirect('/login')
     editedItem = session.query(CatalogItem).filter_by(id=list_id).one()
@@ -300,10 +302,10 @@ def editCatalogItem(category_id, list_id):
     if request.method == 'POST':
 
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('showList', category_id=category_id))
+            return redirect(url_for('show_list', category_id=category_id))
 
         if not request.form['book-name']:
-            return render_template('edititem.html',
+            return render_template('edit-book.html',
                                     category_id=category_id,
                                     list_id=list_id,
                                     item=editedItem,
@@ -314,10 +316,10 @@ def editCatalogItem(category_id, list_id):
             editedItem.description = request.form['description']
         session.add(editedItem)
         session.commit()
-        return redirect(url_for('showList', category_id=category_id))
+        return redirect(url_for('show_list', category_id=category_id))
     else:
 
-        return render_template('edititem.html',
+        return render_template('edit-book.html',
                                 category_id=category_id,
                                 list_id=list_id,
                                 item=editedItem)
@@ -326,22 +328,22 @@ def editCatalogItem(category_id, list_id):
 # Delete a category item
 @app.route('/category/<int:category_id>/list/<int:list_id>/delete',
            methods=['GET', 'POST'])
-def deleteCatalogItem(category_id, list_id):
+def delete_catalog_item(category_id, list_id):
     if 'username' not in login_session:
         return redirect('/login')
     itemToDelete = session.query(CatalogItem).filter_by(id=list_id).one()
 
     if request.method == 'POST':
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('showList', category_id=category_id))
+            return redirect(url_for('show_list', category_id=category_id))
 
         session.delete(itemToDelete)
         session.commit()
-        return redirect(url_for('showList', category_id=category_id))
+        return redirect(url_for('show_list', category_id=category_id))
     else:
-        return render_template('deleteitem.html', item=itemToDelete)
+        return render_template('delete-book.html', item=itemToDelete)
 
-def getUserID(email):
+def get_user_id(email):
     """Get user id."""
     try:
         user = session.query(User).filter_by(email=email).one()
@@ -350,13 +352,13 @@ def getUserID(email):
         return None
 
 
-def getUserInfo(user_id):
-    """Get user informations."""
+def get_user_info(user_id):
+    """Get user information."""
     user = session.query(User).filter_by(id=user_id).one()
     return user
 
 # Create a new user in the database
-def createUser(login_session):
+def create_user(login_session):
     """Create a user."""
     newUser = User(
                     name=login_session['username'],

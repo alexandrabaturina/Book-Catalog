@@ -11,7 +11,7 @@
   <div class="pane">
     <h2>Edit Author</h2>
 
-      <form class="form-edit-author" action="{{url_for('editCategory',category_id = category.id)}}" method="post">
+      <form class="form-edit-author" action="{{url_for('edit_category',category_id = category.id)}}" method="post">
         <input type ="text" name="author-name" value="{{category.name}}">
 
         {% if editing_error %}
