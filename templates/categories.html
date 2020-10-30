@@ -6,22 +6,25 @@
 </head>
 
 <body>
-
   {% include "header.html" %}
 
   <div class = "pane">
     <h2>Authors</h2>
     <a class="new" href="{{url_for('newCategory')}}" > + New Author</a>
 
-    {% for category in categories %}
-      <div class="author">
-        <a href = "{{url_for('showList', category_id = category.id)}}"><h3>{{category.name}}</h3></a>
-        <a class="edit-delete" href = "{{url_for('editCategory',category_id = category.id)}}">Edit</a>
-        <a class="edit-delete" href = "{{url_for('deleteCategory',category_id = category.id)}}">Delete</a>
-      </div>
-    {% endfor %}
+    {% if categories %}
+      {% for category in categories %}
+        <div class="author">
+          <a href = "{{url_for('showList', category_id = category.id)}}"><h3>{{category.name}}</h3></a>
+          <a class="edit-delete" href = "{{url_for('editCategory',category_id = category.id)}}">Edit</a>
+          <a class="edit-delete" href = "{{url_for('deleteCategory',category_id = category.id)}}">Delete</a>
+        </div>
+      {% endfor %}
+
+    {% else %}
+      <p>You haven't added any authors yet.</p>
+    {% endif %}
 
   </div>
 </body>
-
 </html>
