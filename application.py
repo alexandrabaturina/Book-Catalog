@@ -200,7 +200,11 @@ def newCategory():
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
-        newCategory = Category(name=request.form['name'],
+
+        if request.form['submit-button'] == 'Cancel':
+            return redirect(url_for('showCategories'))
+
+        newCategory = Category(name=request.form['new-author-name'],
                                 user_id = login_session['user_id'])
         session.add(newCategory)
         session.commit()
