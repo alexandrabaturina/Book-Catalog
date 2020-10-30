@@ -190,7 +190,7 @@ def categoriesJSON():
 @app.route('/')
 @app.route('/category/')
 def showCategories():
-    categories = session.query(Category).all()
+    categories = session.query(Category).order_by(Category.name).all()
     return render_template('categories.html', categories=categories)
 
 
@@ -258,7 +258,7 @@ def deleteCategory(category_id):
 def showList(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     items = session.query(CatalogItem).filter_by(
-        category_id=category_id).all()
+        category_id=category_id).order_by(CatalogItem.name).all()
     return render_template('list.html', items=items, category=category)
 
 # Create a new category item
@@ -274,9 +274,6 @@ def newCatalogItem(category_id):
             return redirect(url_for('showList', category_id=category_id))
 
         if not request.form['title-to-add']:
-            print("************")
-            print("Title is empty")
-            print("************")
             return render_template('newitem.html',
                             category_id=category_id,
                             empty_title=True)
