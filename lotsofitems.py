@@ -13,8 +13,7 @@ session = DBSession()
 #Create dummy user
 dummy_user = User(
     name="John Johnson",
-    email="JohnJohnson@gmail.com",
-    picture='https://f1.pngfuel.com/png/110/885/214/green-circle-child-avatar-user-profile-smile-boy-cartoon-face-png-clip-art.png')
+    email="JohnJohnson@gmail.com")
 
 session.add(dummy_user)
 session.commit()
