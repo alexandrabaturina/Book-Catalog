@@ -235,11 +235,15 @@ def delete_author(author_id):
     if 'username' not in login_session:
         return redirect('/login')
     author_to_delete = session.query(Author).filter_by(id=author_id).one()
+    books_to_delete = session.query(Book).filter_by(author_id=author_id).all()
 
     if request.method == 'POST':
         if request.form['submit-button'] == 'Cancel':
             return redirect(url_for('show_authors_list', author_id=author_id))
+
         session.delete(author_to_delete)
+        for book in books_to_delete:
+            session.delete(book)
         session.commit()
         return redirect(
             url_for('show_authors_list', author_id=author_id))
