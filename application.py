@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, jsonify
 from flask import url_for, make_response
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Category, CatalogItem, User
+from database_setup import Base, Author, Book, User
 from flask import session as login_session
 
 from oauth2client.client import FlowExchangeError
@@ -17,7 +17,7 @@ import requests
 app = Flask(__name__)
 
 # Connect to database and create database session
-engine = create_engine('sqlite:///catalogitems.db',
+engine = create_engine('sqlite:///books.db',
     connect_args={'check_same_thread': False}, echo=True)
 Base.metadata.bind = engine
 
@@ -112,9 +112,9 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
     login_session['access_token'] = credentials.access_token
-    user_id = getUserID(login_session['email'])
+    user_id = get_user_id(login_session['email'])
     if not user_id:
-        user_id = createUser(login_session)
+        user_id = create_user(login_session)
     login_session['user_id'] = user_id
 
     output = ''
@@ -168,180 +168,183 @@ def gdisconnect():
 
 
 # JSON APIs to view information
-@app.route('/category/<int:category_id>/JSON')
-def show_category_json(category_id):
-    category = session.query(Category).filter_by(id=category_id).one()
-    items = session.query(CatalogItem).filter_by(
-        category_id=category_id).all()
-    return jsonify(CatalogItems=[i.serialize for i in items])
+# @app.route('/category/<int:author_id>/JSON')
+# def show_author_json(author_id):
+#     category = session.query(Author).filter_by(id=author_id).one()
+#     items = session.query(Book).filter_by(
+#         author_id=author_id).all()
+#     return jsonify(CatalogItems=[i.serialize for i in items])
+#
+#
+# @app.route('/category/<int:author_id>/<int:item_id>/JSON')
+# def show_category_item_json(author_id, item_id):
+#     Category_Item = session.query(Book).filter_by(id=item_id).one()
+#     return jsonify(Category_Item=Category_Item.serialize)
+#
+#
+# @app.route('/category/JSON')
+# def show_categories_json():
+#     categories = session.query(Author).all()
+#     return jsonify(categories=[r.serialize for r in categories])
 
 
-@app.route('/category/<int:category_id>/<int:item_id>/JSON')
-def show_category_item_json(category_id, item_id):
-    Category_Item = session.query(CatalogItem).filter_by(id=item_id).one()
-    return jsonify(Category_Item=Category_Item.serialize)
-
-
-@app.route('/category/JSON')
-def show_categories_json():
-    categories = session.query(Category).all()
-    return jsonify(categories=[r.serialize for r in categories])
-
-
-# Show all categories
+# Show all authors
 @app.route('/')
-@app.route('/category/')
-def show_categories():
-    categories = session.query(Category).order_by(Category.name).all()
-    return render_template('authors-list.html', categories=categories)
+@app.route('/authors/')
+def show_authors_list():
+    authors = session.query(Author).order_by(Author.name).all()
+    return render_template('authors-list.html', authors=authors)
 
 
-# Create a new category
-@app.route('/category/new/', methods=['GET', 'POST'])
-def add_category():
+# Add new author
+@app.route('/author/new/', methods=['GET', 'POST'])
+def add_author():
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
 
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('show_categories'))
+            return redirect(url_for('show_authors_list'))
 
         if not request.form['new-author-name']:
             return render_template('add-author.html', empty_author_name=True)
 
-        newCategory = Category(name=request.form['new-author-name'],
-                                user_id = login_session['user_id'])
-        session.add(newCategory)
+        new_author = Author(
+            name=request.form['new-author-name'],
+            user_id = login_session['user_id'])
+        session.add(new_author)
         session.commit()
-        return redirect(url_for('show_categories'))
+        return redirect(url_for('show_authors_list'))
     else:
         return render_template('add-author.html')
 
 
-# Edit a category
-@app.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
-def edit_category(category_id):
+# Edit author's name
+@app.route('/author/<int:author_id>/edit/', methods=['GET', 'POST'])
+def edit_author(author_id):
     if 'username' not in login_session:
         return redirect('/login')
-    editedCategory = session.query(
-        Category).filter_by(id=category_id).one()
+
+    author_to_edit = session.query(Author).filter_by(id=author_id).one()
     if request.method == 'POST':
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('show_categories'))
+            return redirect(url_for('show_authors_list'))
         if not request.form['author-name']:
-            return render_template('edit-author.html', category=editedCategory, editing_error=True)
-        editedCategory.name = request.form['author-name']
-        return redirect(url_for('show_categories'))
+            return render_template(
+                'edit-author.html',
+                author=author_to_edit,
+                empty_author_name=True)
+        author_to_edit.name = request.form['author-name']
+        return redirect(url_for('show_authors_list'))
     else:
-        return render_template('edit-author.html', category=editedCategory)
+        return render_template('edit-author.html', author=author_to_edit)
 
 
-# Delete a category
-@app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
-def delete_category(category_id):
+# Delete an author
+@app.route('/author/<int:author_id>/delete/', methods=['GET', 'POST'])
+def delete_author(author_id):
     if 'username' not in login_session:
         return redirect('/login')
-    categoryToDelete = session.query(Category).filter_by(id=category_id).one()
+    author_to_delete = session.query(Author).filter_by(id=author_id).one()
 
     if request.method == 'POST':
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('show_categories', category_id=category_id))
-        session.delete(categoryToDelete)
+            return redirect(url_for('show_authors_list', author_id=author_id))
+        session.delete(author_to_delete)
         session.commit()
         return redirect(
-            url_for('show_categories', category_id=category_id))
+            url_for('show_authors_list', author_id=author_id))
     else:
-        return render_template(
-            'delete-author.html', category=categoryToDelete)
+        return render_template('delete-author.html', author=author_to_delete)
 
-# Show a list of items in a category
-@app.route('/category/<int:category_id>/')
-@app.route('/category/<int:category_id>/list/')
-def show_list(category_id):
-    category = session.query(Category).filter_by(id=category_id).one()
-    items = session.query(CatalogItem).filter_by(
-        category_id=category_id).order_by(CatalogItem.name).all()
-    return render_template('books-list.html', items=items, category=category)
+# Show a list of books for an author
+@app.route('/author/<int:author_id>/')
+@app.route('/author/<int:author_id>/books/')
+def show_list(author_id):
+    author = session.query(Author).filter_by(id=author_id).one()
+    books = session.query(Book).filter_by(author_id=author_id).order_by(Book.title).all()
+    return render_template('books-list.html', books=books, author=author)
 
-# Create a new category item
+# Add new book
 @app.route(
-    '/category/<int:category_id>/list/new/', methods=['GET', 'POST'])
-def add_catalog_item(category_id):
+    '/author/<int:author_id>/books/new/', methods=['GET', 'POST'])
+def add_book(author_id):
     if 'username' not in login_session:
         return redirect('/login')
 
     if request.method == 'POST':
 
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('show_list', category_id=category_id))
+            return redirect(url_for('show_list', author_id=author_id))
 
         if not request.form['title-to-add']:
             return render_template('add-book.html',
-                            category_id=category_id,
+                            author_id=author_id,
                             empty_title=True)
 
-        newItem = CatalogItem(name=request.form['title-to-add'],
-                            description=request.form['description-to-add'],
-                            category_id=category_id)
-        session.add(newItem)
+        new_book = Book(
+            title=request.form['title-to-add'],
+            description=request.form['description-to-add'],
+            author_id=author_id)
+        session.add(new_book)
         session.commit()
 
-        return redirect(url_for('show_list', category_id=category_id))
+        return redirect(url_for('show_list', author_id=author_id))
     else:
-        return render_template('add-book.html', category_id=category_id)
+        return render_template('add-book.html', author_id=author_id)
 
 
-# Edit a category item
-@app.route('/category/<int:category_id>/list/<int:list_id>/edit',
+# Edit book info
+@app.route('/author/<int:author_id>/books/<int:book_id>/edit',
            methods=['GET', 'POST'])
-def edit_catalog_item(category_id, list_id):
+def edit_book(author_id, book_id):
     if 'username' not in login_session:
         return redirect('/login')
-    editedItem = session.query(CatalogItem).filter_by(id=list_id).one()
+    book_to_edit = session.query(Book).filter_by(id=book_id).one()
 
     if request.method == 'POST':
 
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('show_list', category_id=category_id))
+            return redirect(url_for('show_list', author_id=author_id))
 
         if not request.form['book-name']:
             return render_template('edit-book.html',
-                                    category_id=category_id,
-                                    list_id=list_id,
-                                    item=editedItem,
-                                    error_title=True)
+                                    # author_id=author_id,
+                                    # book_id=book_id,
+                                    book=book_to_edit,
+                                    empty_title=True)
         if request.form['book-name']:
-            editedItem.name = request.form['book-name']
+            book_to_edit.title = request.form['book-name']
         if request.form['description']:
-            editedItem.description = request.form['description']
-        session.add(editedItem)
+            book_to_edit.description = request.form['description']
+        session.add(book_to_edit)
         session.commit()
-        return redirect(url_for('show_list', category_id=category_id))
+        return redirect(url_for('show_list', author_id=author_id))
     else:
 
         return render_template('edit-book.html',
-                                category_id=category_id,
-                                list_id=list_id,
-                                item=editedItem)
+                                author_id=author_id,
+                                # book_id=book_id,
+                                book=book_to_edit)
 
 
-# Delete a category item
-@app.route('/category/<int:category_id>/list/<int:list_id>/delete',
+# Delete a book
+@app.route('/author/<int:author_id>/books/<int:book_id>/delete',
            methods=['GET', 'POST'])
-def delete_catalog_item(category_id, list_id):
+def delete_book(author_id, book_id):
     if 'username' not in login_session:
         return redirect('/login')
-    itemToDelete = session.query(CatalogItem).filter_by(id=list_id).one()
+    book_to_delete = session.query(Book).filter_by(id=book_id).one()
 
     if request.method == 'POST':
         if request.form['submit-button'] == 'Cancel':
-            return redirect(url_for('show_list', category_id=category_id))
+            return redirect(url_for('show_list', author_id=author_id))
 
-        session.delete(itemToDelete)
+        session.delete(book_to_delete)
         session.commit()
-        return redirect(url_for('show_list', category_id=category_id))
+        return redirect(url_for('show_list', author_id=author_id))
     else:
-        return render_template('delete-book.html', item=itemToDelete)
+        return render_template('delete-book.html', book=book_to_delete)
 
 def get_user_id(email):
     """Get user id."""
@@ -360,11 +363,11 @@ def get_user_info(user_id):
 # Create a new user in the database
 def create_user(login_session):
     """Create a user."""
-    newUser = User(
-                    name=login_session['username'],
-                    email=login_session['email'],
-                    picture=login_session['picture'])
-    session.add(newUser)
+    new_user = User(
+        name=login_session['username'],
+        email=login_session['email'],
+        picture=login_session['picture'])
+    session.add(new_user)
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
     return user.id
