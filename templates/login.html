@@ -22,7 +22,6 @@
                   client_id: '489474672499-v9uhsrfeimjraj8hktb0qr9roi3jc3dd.apps.googleusercontent.com',
                   scope: 'profile email'
                 });
-
                   console.log("Sign in button clicked")
                   auth2.grantOfflineAccess({
                     'redirect_uri': 'postmessage'
@@ -32,7 +31,7 @@
 
             function offlineAccess(resp) {
               console.log("In offline access")
-              var auth_code = resp.code;
+              let auth_code = resp.code;
               console.log(resp);
               $.ajax({
                     type: "POST",
@@ -40,17 +39,13 @@
                     processData: false,
                     contentType: 'application/octet-stream; charset=utf-8',
                     data: auth_code,
-                    success: function (result) {
-                        $("body").html(result);
-                        setTimeout(function () {
-                            window.location.href = '/authors'
-                        }, 3000);
+                    success: function () {
+                        window.location.href = '/authors';
                       }
                 });
               }
         </script>
-​​
-    </div>
+​​    </div>
 </body>
 ​
 </html>
