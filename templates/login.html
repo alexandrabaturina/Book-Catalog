@@ -5,9 +5,7 @@
     <link href='//fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
 ​
-    <!--google -->
-    <script src="//apis.google.com/js/platform.js?onload=init" async defer>
-    </script>`
+    <script src="//apis.google.com/js/platform.js?onload=init" async defer></script>`
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id" content="489474672499-v9uhsrfeimjraj8hktb0qr9roi3jc3dd.apps.googleusercontent.com">
 ​
@@ -16,11 +14,6 @@
 <body>
     <div class="container">
 ​
-        <!-- start Google Start Login -->
-        <h1>Sign with your Google Account</h1>
-​
-        <button class="g-signin2" id="signinButton">Sign in with
-            Google</button>
         <script>
         function init() {
               gapi.load('auth2', function () {
@@ -30,17 +23,15 @@
                   scope: 'profile email'
                 });
 
-                $("#signinButton").click(function () {
-                  console.log("clicked")
+                  console.log("Sign in button clicked")
                   auth2.grantOfflineAccess({
                     'redirect_uri': 'postmessage'
                   }).then(offlineAccess);
-                });
               });
             }
 
             function offlineAccess(resp) {
-              console.log("in offline access")
+              console.log("In offline access")
               var auth_code = resp.code;
               console.log(resp);
               $.ajax({
@@ -52,15 +43,13 @@
                     success: function (result) {
                         $("body").html(result);
                         setTimeout(function () {
-                            window.location.href = '/category'
+                            window.location.href = '/authors'
                         }, 3000);
                       }
                 });
               }
         </script>
-​
-        <!-- start Google End Login -->
-​
+​​
     </div>
 </body>
 ​
