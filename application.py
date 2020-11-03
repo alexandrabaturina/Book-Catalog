@@ -106,9 +106,8 @@ def gconnect():
 
     data = answer.json()
 
-    # append name, picture and email to login_session
+    # append name and email to login_session
     login_session['username'] = data['name']
-    login_session['picture'] = data['picture']
     login_session['email'] = data['email']
     login_session['access_token'] = credentials.access_token
     user_id = get_user_id(login_session['email'])
@@ -116,16 +115,7 @@ def gconnect():
         user_id = create_user(login_session)
     login_session['user_id'] = user_id
 
-    output = ''
-    output += '<h1>Welcome, '
-    output += login_session['username']
-    output += '!</h1>'
-    output += '<img src="'
-    output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius:'
-    output += ' 150px;-webkit-border-radius: 150px;'
-    output += ' -moz-border-radius: 150px;"> '
-    return output
+    return ''
 
 # Revoke a current user's token and reset their login_session
 @app.route('/gdisconnect')
@@ -152,7 +142,6 @@ def gdisconnect():
         del login_session['gplus_id']
         del login_session['username']
         del login_session['email']
-        del login_session['picture']
         del login_session['access_token']
 
         response = make_response(json.dumps('Successfully Disconnected.'), 200)
@@ -365,8 +354,7 @@ def create_user(login_session):
     """Create a user."""
     new_user = User(
         name=login_session['username'],
-        email=login_session['email'],
-        picture=login_session['picture'])
+        email=login_session['email'])
     session.add(new_user)
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
