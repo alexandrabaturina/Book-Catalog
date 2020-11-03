@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import Category, Base, CatalogItem, User
+from database_setup import Base, User, Book, Author
 
-engine = create_engine('sqlite:///catalogitems.db')
+engine = create_engine('sqlite:///books.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -11,143 +11,120 @@ session = DBSession()
 
 
 #Create dummy user
-user1 = User(name="John Johnson",
-email="JohnJohnson@gmail.com", picture='https://f1.pngfuel.com/png/110/' +\
-'885/214/green-circle-child-avatar-user-profile-smile-boy-cartoon-face-png-' +\
-'clip-art.png')
+dummy_user = User(
+    name="John Johnson",
+    email="JohnJohnson@gmail.com",
+    picture='https://f1.pngfuel.com/png/110/885/214/green-circle-child-avatar-user-profile-smile-boy-cartoon-face-png-clip-art.png')
 
-session.add(user1)
+session.add(dummy_user)
 session.commit()
 
 
-#Books of John Grisham (= Category1)
-category1 = Category(user_id = 1, name = "John Grisham")
+# Books by John Grisham
+john_grisham = Author(
+    user_id=1,
+    name="John Grisham")
 
-session.add(category1)
+session.add(john_grisham)
 session.commit()
 
-catalogItem1 = CatalogItem(
-    name = "Camino Island",
-    description = '''Bruce Cable owns a popular bookstore in the sleepy resort
-    town of Santa Rosa on Camino Island in Florida. He makes his real money,
-    though, as a prominent dealer in rare books. Very few people know that he
-    occasionally dabbles in the black market of stolen books and manuscripts.
-    Mercer Mann is a young novelist with a severe case of writer's block who
-    has recently been laid off from her teaching position. She is approached by
-    an elegant, mysterious woman working for an even more mysterious company.
-    A generous offer of money convinces Mercer to go undercover and infiltrate
-    Bruce Cable's circle of literary friends, ideally getting close enough to
-    him to learn his secrets. But eventually Mercer learns far too much.''',
-    category = category1)
+camino_island = Book(
+    title="Camino Island",
+    description="Bruce Cable owns a popular bookstore in the sleepy resort town of Santa Rosa on Camino Island in Florida. He makes his real money, though, as a prominent dealer in rare books. Very few people know that he occasionally dabbles in the black market of stolen books and manuscripts. Mercer Mann is a young novelist with a severe case of writer's block who has recently been laid off from her teaching position. She is approached by an elegant, mysterious woman working for an even more mysterious company. A generous offer of money convinces Mercer to go undercover and infiltrate Bruce Cable's circle of literary friends, ideally getting close enough to him to learn his secrets. But eventually Mercer learns far too much.",
+    author=john_grisham)
 
-session.add(catalogItem1)
+session.add(camino_island)
 session.commit()
 
 
-catalogItem2 = CatalogItem(
-    name = "The Whistler",
-    description = '''Lacy Stoltz, an investigator for the Florida Board on
-    Judicial Conduct, takes on a case involving a corrupt judge, a Native
-    American casino, and the mafia when a previously disbarred lawyer
-    approaches her on behalf of a client who claims to know the truth ''',
-    category = category1)
+the_whistler = Book(
+    title="The Whistler",
+    description="Lacy Stoltz, an investigator for the Florida Board on Judicial Conduct, takes on a case involving a corrupt judge, a Native American casino, and the mafia when a previously disbarred lawyer approaches her on behalf of a client who claims to know the truth.",
+    author=john_grisham)
 
-session.add(catalogItem2)
+session.add(the_whistler)
 session.commit()
 
 
-catalogItem3 = CatalogItem(
-    name = "Theodore Boone",
-    description = '''With two attorneys for parents, thirteen-year-old Theodore
-    Boone knows more about the law than most lawyers do. But when a high
-    profile murder trial comes to his small town and Theo gets pulled into it,
-    it's up to this amateur attorney to save the day. ''',
-    category = category1)
+theodore_boone = Book(
+    title="Theodore Boone",
+    description="With two attorneys for parents, thirteen-year-old Theodore Boone knows more about the law than most lawyers do. But when a high profile murder trial comes to his small town and Theo gets pulled into it, it's up to this amateur attorney to save the day.",
+    author=john_grisham)
 
-session.add(catalogItem3)
+session.add(theodore_boone)
 session.commit()
 
 
-catalogItem4 = CatalogItem(
-    name = "Skipping Christmas",
-    description = '''Imagine a year without Christmas. No crowded malls, no
-    corny office parties, no fruitcakes, no unwanted presents. That's just what
-    Luther and Nora Krank have in mind when they decide that, just this once,
-    they'll skip the holiday together.''',
-    category = category1)
+skipping_christmas = Book(
+    title="Skipping Christmas",
+    description="Imagine a year without Christmas. No crowded malls, no corny office parties, no fruitcakes, no unwanted presents. That's just what Luther and Nora Krank have in mind when they decide that, just this once, they'll skip the holiday together.",
+    author=john_grisham)
 
-session.add(catalogItem4)
+session.add(skipping_christmas)
 session.commit()
 
 
-#Books of Dale Carnegie (= Category 2)
-category2 = Category(user_id = 1, name = "Dale Carnegie")
+# Books by Dale Carnegie
+dale_carnegie = Author(
+    user_id=1,
+    name="Dale Carnegie")
 
-session.add(category2)
+session.add(dale_carnegie)
 session.commit()
 
 
-catalogItem1 = CatalogItem(
-    name = "How to Win Friends and Influence People",
-    description = '''Carnegie's classic bestseller - an inspirational personal
-    -development guide that shows how to achieve lifelong success.''',
-    category = category2)
+how_to_win_friends= Book(
+    title="How to Win Friends and Influence People",
+    description="Carnegie's classic bestseller - an inspirational personal development guide that shows how to achieve lifelong success.",
+    author=dale_carnegie)
 
-session.add(catalogItem1)
+session.add(how_to_win_friends)
 session.commit()
 
 
-catalogItem2 = CatalogItem(name = "How to Enjoy your Life and your Job",
-    description = '''Collecting the most inspirational passages from his
-    landmark mega-bestsellers How to win friends and influence people and How
-    to stop worrying and start living, Dale Carnegie's How to enjoy your life
-    and your job will help you create a new approach to life and get the most
-    out of yourself.''',
-    category = category2)
+how_to_enjoy_your_life = Book(
+    title="How to Enjoy your Life and your Job",
+    description="Collecting the most inspirational passages from his landmark mega-bestsellers How to win friends and influence people and How to stop worrying and start living, Dale Carnegie's How to enjoy your life and your job will help you create a new approach to life and get the most out of yourself.",
+    author=dale_carnegie)
 
-session.add(catalogItem2)
+session.add(how_to_enjoy_your_life)
 session.commit()
 
 
-catalogItem3 = CatalogItem(name = "How to Stop Worrying and Start Living",
-    description = '''In this classic work, How to Stop Worrying and Start
-    Living, Carnegie offers a set of practical formulas that you can put to
-    work today. It is a book packed with lessons that will last a lifetime and
-    make that lifetime happier!''',
-    category = category2)
+how_to_stop_worrying = Book(
+    title="How to Stop Worrying and Start Living",
+    description="In this classic work, How to Stop Worrying and Start Living, Carnegie offers a set of practical formulas that you can put to work today. It is a book packed with lessons that will last a lifetime and make that lifetime happier!",
+    author=dale_carnegie)
 
-session.add(catalogItem3)
+session.add(how_to_stop_worrying)
 session.commit()
 
 
-#Books of Jamie Oliver (= Category 3)
-category3 = Category(user_id = 1, name = "Jamie Oliver")
+# Books by Jamie Oliver
+jamie_oliver = Author(
+    user_id=1,
+    name="Jamie Oliver")
 
-session.add(category3)
+session.add(jamie_oliver)
 session.commit()
 
 
-catalogItem1 = CatalogItem(
-    name = "Ultimate Veg",
-    description = '''Plant-based and veg-forward dishes and meals to encourage
-    eating more plants; based in nutritional, economical, and environmental
-    considerations.''',
-    category = category3)
+ultimate_veg = Book(
+    title="Ultimate Veg",
+    description="Plant-based and veg-forward dishes and meals to encourage eating more plants; based in nutritional, economical, and environmental considerations.",
+    author=jamie_oliver)
 
-session.add(catalogItem1)
+session.add(ultimate_veg)
 session.commit()
 
 
-catalogItem2 = CatalogItem(
-    name = "Everyday Super Food",
-    description = '''The chef describes his personal journey of weight loss and
-    improved eating habits and offers a collection of recipes for those looking
-    to become healthier, including such offerings as figgy banana bread and
-    crumbed pesto fish.''',
-    category = category3)
+everyday_super_food = Book(
+    title="Everyday Super Food",
+    description="The chef describes his personal journey of weight loss and improved eating habits and offers a collection of recipes for those looking to become healthier, including such offerings as figgy banana bread and crumbed pesto fish.",
+    author=jamie_oliver)
 
-session.add(catalogItem2)
+session.add(everyday_super_food)
 session.commit()
 
 
-print ("added books!")
+print("Added books from database.")

@@ -8,16 +8,15 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 class User(Base):
      __tablename__ = 'user'
-     id = Column(Integer, primary_key = True)
-     name = Column(String(250), nullable = False)
-     email = Column(String(250), nullable = False)
+     id = Column(Integer, primary_key=True)
+     name = Column(String(250), nullable=False)
+     email = Column(String(250), nullable=False)
      picture = Column(String(250))
 
-class Category(Base):
-    __tablename__ = 'category'
-
-    id = Column(Integer, primary_key = True)
-    name = Column(String(50), nullable = False)
+class Author(Base):
+    __tablename__ = 'author'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
@@ -30,14 +29,14 @@ class Category(Base):
         }
 
 
-class CatalogItem(Base):
-    __tablename__ = 'catalog_item'
+class Book(Base):
+    __tablename__ = 'book'
 
-    name = Column(String(50), nullable = False)
-    id = Column(Integer, primary_key = True)
+    title = Column(String(50), nullable=False)
+    id = Column(Integer, primary_key=True)
     description = Column(String(250))
-    category_id = Column(Integer, ForeignKey('category.id'))
-    category = relationship(Category)
+    author_id = Column(Integer, ForeignKey('author.id'))
+    author = relationship(Author)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
@@ -46,11 +45,11 @@ class CatalogItem(Base):
     def serialize(self):
 
         return {
-            'name': self.name,
+            'title': self.title,
             'description': self.description,
             'id': self.id,
         }
 
 
-engine = create_engine('sqlite:///catalogitems.db')
+engine = create_engine('sqlite:///books.db')
 Base.metadata.create_all(engine)
