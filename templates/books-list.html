@@ -9,26 +9,26 @@
 	{% include "header.html" %}
 
 	<div class='pane'>
-		<h2>Books by {{ category.name }}</h2>
+		<h2>Books by {{ author.name }}</h2>
 
-		<a class="new" href = "{{url_for('add_catalog_item', category_id=category.id)}}">+ New Book</a>
+		<a class="new" href = "{{url_for('add_book', author_id=author.id)}}">+ New Book</a>
 
-    {% if items %}
+    {% if books %}
 
-			{% for item in items %}
+			{% for book in books %}
 				<div class="book-info">
-					<h3>{{item.name}}</h3>
+					<h3>{{book.title}}</h3>
 
-					{% if item.description %}
-						<p>{{item.description}}</p>
+					{% if book.description %}
+						<p>{{book.description}}</p>
 					{% else %}
 						<p>No description provided for this book yet.</p>
 					{% endif %}
 
 					<div class="edit-book-info">
-						<a class="edit-delete" href='{{url_for('edit_catalog_item', category_id=category.id, list_id=item.id ) }}'>
+						<a class="edit-delete" href="{{url_for('edit_book', author_id=author.id, book_id=book.id)}}">
 							Edit</a>
-						<a class="edit-delete" href='{{url_for('delete_catalog_item', category_id=category.id, list_id=item.id)}}'>
+						<a class="edit-delete" href="{{url_for('delete_book', author_id=author.id, book_id=book.id)}}">
 							Delete</a>
 					</div>
 				</div>
