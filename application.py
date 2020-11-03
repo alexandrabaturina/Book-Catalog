@@ -61,8 +61,7 @@ def gconnect():
 
     # Check that the access token is valid.
     access_token = credentials.access_token
-    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
-           % access_token)
+    url = (f"https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={access_token}")
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
     # If there was an error in the access token info, abort.
@@ -82,7 +81,7 @@ def gconnect():
     if result['issued_to'] != CLIENT_ID:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
-        print("Token's client ID does not match app's.")
+        print("Token's client ID does not match the app's one.")
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -134,6 +133,7 @@ def gdisconnect():
     """Disconnect user from server."""
 
     credentials = login_session.get('credentials')
+
     # check if user is already disconnected
     if credentials is None:
         response = make_response(json.dumps(
@@ -142,7 +142,7 @@ def gdisconnect():
         return response
     # Execute HTTP GET request to revoke current token
     access_token = login_session['access_token']
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
+    url = f"https://accounts.google.com/o/oauth2/revoke?token={access_token}"
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
 
@@ -161,9 +161,9 @@ def gdisconnect():
         return redirect('/')
     else:
         response = make_response(json.dumps(
-                                'Fail to revoke token for given user.', 400))
+                                'Fail to revoke token for given user.'), 400)
         response.headers['Content-Type'] = 'application/json'
-        #return redirect(url_for('showLogin'))
+        # return redirect(url_for('showLogin'))
         return redirect('/')
 
 
