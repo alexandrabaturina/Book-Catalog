@@ -155,26 +155,24 @@ def gdisconnect():
         # return redirect(url_for('showLogin'))
         return redirect('/')
 
+# JSON APIs
+@app.route('/authors/<int:author_id>/JSON')
+def show_author_json(author_id):
+    books = session.query(Book).filter_by(author_id=author_id).all()
+    return jsonify(books=[book.serialize for book in books])
 
-# JSON APIs to view information
-# @app.route('/category/<int:author_id>/JSON')
-# def show_author_json(author_id):
-#     category = session.query(Author).filter_by(id=author_id).one()
-#     items = session.query(Book).filter_by(
-#         author_id=author_id).all()
-#     return jsonify(CatalogItems=[i.serialize for i in items])
-#
-#
-# @app.route('/category/<int:author_id>/<int:item_id>/JSON')
-# def show_category_item_json(author_id, item_id):
-#     Category_Item = session.query(Book).filter_by(id=item_id).one()
-#     return jsonify(Category_Item=Category_Item.serialize)
-#
-#
-# @app.route('/category/JSON')
-# def show_categories_json():
-#     categories = session.query(Author).all()
-#     return jsonify(categories=[r.serialize for r in categories])
+
+@app.route('/authors/<int:author_id>/<int:book_id>/JSON')
+def show_category_item_json(author_id, book_id):
+    # author = session.query(Author).filter_by(author_id=author_id).one()
+    book = session.query(Book).filter_by(author_id=author_id, id=book_id).one()
+    return jsonify(book=book.serialize)
+
+
+@app.route('/authors/JSON')
+def show_authors_json():
+    authors = session.query(Author).all()
+    return jsonify(authors=[author.serialize for author in authors])
 
 
 # Show all authors
