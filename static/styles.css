@@ -41,8 +41,13 @@ a {
   font-weight: 600;
 }
 
-.new {
+.new,
+.author-names {
   color: #35838d;
+}
+
+.new:hover{
+  text-decoration: underline;
 }
 
 .pane {
@@ -83,19 +88,39 @@ li {
   font-size: 0.9em;
 }
 
-.author {
+.edit-delete:hover {
+  text-decoration: underline;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
   padding-bottom: 15px;
 }
 
-.book-info {
-  padding-bottom: 10px;
-  text-align: justify;
-  border-bottom: 1px solid #35838d;
-  margin-bottom: 50px;
-
+.author-names {
+  font-size: 1.5em;
+  margin-bottom: 5px;
 }
 
-.book-info:last-child {
+.author-names:hover {
+  color: #012e33;
+}
+
+.book-info,
+.author-info {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #35838d;
+  margin-bottom: 50px;
+}
+
+.book-info {
+  text-align: justify;
+}
+
+.book-info:last-child,
+.author-info:last-child {
   border-bottom: none;
 }
 
@@ -106,13 +131,15 @@ li {
   margin-bottom: 0px;
 }
 
-.edit-book-info {
+.edit-book-info,
+.edit-author-info {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-.edit-book-info a{
+.edit-book-info a,
+.edit-author-info a{
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 20px;
