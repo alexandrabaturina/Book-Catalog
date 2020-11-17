@@ -28,18 +28,23 @@ CLIENT_ID = json.loads(
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-# Create anti-forgery state token
 @app.route('/login')
 def show_login():
+    """
+    Renders page to login with Google account.
+    """
+    # Create anti-forgery state token
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in range(32))
     login_session['state'] = state
     return render_template('login.html', STATE=state)
 
-# Create server side function
+# Server-side function to connect user to server.
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
-    """Connect user to server."""
+    """
+    Connects authorized user to server.
+    """
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -59,17 +64,17 @@ def gconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-    # Check that the access token is valid.
+    # Check that the access token is valid
     access_token = credentials.access_token
     url = (f"https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={access_token}")
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
-    # If there was an error in the access token info, abort.
+    # If there was an error in the access token info, abort
     if result.get('error') is not None:
         response = make_response(json.dumps(result.get('error')), 500)
         response.headers['Content-Type'] = 'application/json'
 
-    # Verify that the access token is used for the intended user.
+    # Verify that the access token is used for the intended user
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
         response = make_response(
@@ -89,13 +94,11 @@ def gconnect():
     stored_gplus_id = login_session.get('gplus_id')
     if stored_credentials is not None and gplus_id == stored_gplus_id:
         response = make_response(
-                                json.dumps(
-                                    'Current user is already connected.'),
-                                200)
+            json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
-    # Store the access token in the session for later use.
+    # Store the access token in the session for later use
     login_session['credentials'] = credentials.to_json()
     login_session['gplus_id'] = gplus_id
 
@@ -106,7 +109,7 @@ def gconnect():
 
     data = answer.json()
 
-    # append name and email to login_session
+    # Append name and email to login_session
     login_session['username'] = data['name']
     login_session['email'] = data['email']
     login_session['access_token'] = credentials.access_token
@@ -120,11 +123,12 @@ def gconnect():
 # Revoke a current user's token and reset their login_session
 @app.route('/gdisconnect')
 def gdisconnect():
-    """Disconnect user from server."""
-
+    """
+    Disconnects user from server.
+    """
     credentials = login_session.get('credentials')
 
-    # check if user is already disconnected
+    # Check if user is already disconnected
     if credentials is None:
         response = make_response(json.dumps(
                                 'Current user not connected.'), 401)
@@ -146,53 +150,61 @@ def gdisconnect():
 
         response = make_response(json.dumps('Successfully Disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
-#        return redirect(url_for('showLogin'))
         return redirect('/')
     else:
         response = make_response(json.dumps(
                                 'Fail to revoke token for given user.'), 400)
         response.headers['Content-Type'] = 'application/json'
-        # return redirect(url_for('showLogin'))
         return redirect('/')
 
 # JSON APIs
 @app.route('/authors/<int:author_id>/JSON')
 def show_author_json(author_id):
+    """
+    Takes author_id and returns info about all books of the author in JSON format.
+    """
     books = session.query(Book).filter_by(author_id=author_id).all()
     return jsonify(books=[book.serialize for book in books])
 
-
 @app.route('/authors/<int:author_id>/<int:book_id>/JSON')
 def show_category_item_json(author_id, book_id):
-    # author = session.query(Author).filter_by(author_id=author_id).one()
+    """
+    Takes author_id and book_id and returns info about the book in JSON format.
+    """
     book = session.query(Book).filter_by(author_id=author_id, id=book_id).one()
     return jsonify(book=book.serialize)
 
-
 @app.route('/authors/JSON')
 def show_authors_json():
+    """
+    Returns a list of authors.
+    """
     authors = session.query(Author).all()
     return jsonify(authors=[author.serialize for author in authors])
 
-
-# Show all authors
+# Show authors list
 @app.route('/')
 @app.route('/authors/')
 def show_authors_list():
+    """
+    Renders a list of all authors.
+    """
     authors = session.query(Author).order_by(Author.name).all()
     return render_template('authors-list.html', authors=authors)
-
 
 # Add new author
 @app.route('/author/new/', methods=['GET', 'POST'])
 def add_author():
+    """
+    Handles data from "Add Author" form, adds new author to the database,
+    and renders list of authors.
+    """
     if 'username' not in login_session:
         return redirect('/login')
-    if request.method == 'POST':
 
+    if request.method == 'POST':
         if request.form['submit-button'] == 'Cancel':
             return redirect(url_for('show_authors_list'))
-
         if not request.form['new-author-name']:
             return render_template('add-author.html', empty_author_name=True)
 
@@ -205,10 +217,13 @@ def add_author():
     else:
         return render_template('add-author.html')
 
-
 # Edit author's name
 @app.route('/author/<int:author_id>/edit/', methods=['GET', 'POST'])
 def edit_author(author_id):
+    """
+    Takes author_id, edits author name with data from Edit Author form, and
+    renders list of authors.
+    """
     if 'username' not in login_session:
         return redirect('/login')
 
@@ -226,10 +241,13 @@ def edit_author(author_id):
     else:
         return render_template('edit-author.html', author=author_to_edit)
 
-
 # Delete an author
 @app.route('/author/<int:author_id>/delete/', methods=['GET', 'POST'])
 def delete_author(author_id):
+    """
+    Takes author_id, removes the author with this id from database, and renders
+    updated list of authors.
+    """
     if 'username' not in login_session:
         return redirect('/login')
     author_to_delete = session.query(Author).filter_by(id=author_id).one()
@@ -252,14 +270,20 @@ def delete_author(author_id):
 @app.route('/author/<int:author_id>/')
 @app.route('/author/<int:author_id>/books/')
 def show_list(author_id):
+    """
+    Takes author_id and renders all books of the author with author_id.
+    """
     author = session.query(Author).filter_by(id=author_id).one()
     books = session.query(Book).filter_by(author_id=author_id).order_by(Book.title).all()
     return render_template('books-list.html', books=books, author=author)
 
 # Add new book
-@app.route(
-    '/author/<int:author_id>/books/new/', methods=['GET', 'POST'])
+@app.route('/author/<int:author_id>/books/new/', methods=['GET', 'POST'])
 def add_book(author_id):
+    """
+    Takes author_id, creates a new book using data from Add Book form
+    in the database, and renders list of all books of the author with author_id.
+    """
     if 'username' not in login_session:
         return redirect('/login')
 
@@ -272,7 +296,6 @@ def add_book(author_id):
             return render_template('add-book.html',
                             author_id=author_id,
                             empty_title=True)
-
         new_book = Book(
             title=request.form['title-to-add'],
             description=request.form['description-to-add'],
@@ -284,11 +307,14 @@ def add_book(author_id):
     else:
         return render_template('add-book.html', author_id=author_id)
 
-
 # Edit book info
 @app.route('/author/<int:author_id>/books/<int:book_id>/edit',
            methods=['GET', 'POST'])
 def edit_book(author_id, book_id):
+    """
+    Takes author_id and book_id, edits the book with book_id using data from the
+    Edit Book form, and renders all books of the author with author_id.
+    """
     if 'username' not in login_session:
         return redirect('/login')
     book_to_edit = session.query(Book).filter_by(id=book_id).one()
@@ -300,8 +326,6 @@ def edit_book(author_id, book_id):
 
         if not request.form['book-name']:
             return render_template('edit-book.html',
-                                    # author_id=author_id,
-                                    # book_id=book_id,
                                     book=book_to_edit,
                                     empty_title=True)
         if request.form['book-name']:
@@ -312,17 +336,18 @@ def edit_book(author_id, book_id):
         session.commit()
         return redirect(url_for('show_list', author_id=author_id))
     else:
-
         return render_template('edit-book.html',
                                 author_id=author_id,
-                                # book_id=book_id,
                                 book=book_to_edit)
-
 
 # Delete a book
 @app.route('/author/<int:author_id>/books/<int:book_id>/delete',
            methods=['GET', 'POST'])
 def delete_book(author_id, book_id):
+    """
+    Takes author_id and book_id, removes the book with book_id from the
+    database, and renders all books of the author with author_id.
+    """
     if 'username' not in login_session:
         return redirect('/login')
     book_to_delete = session.query(Book).filter_by(id=book_id).one()
@@ -330,7 +355,6 @@ def delete_book(author_id, book_id):
     if request.method == 'POST':
         if request.form['submit-button'] == 'Cancel':
             return redirect(url_for('show_list', author_id=author_id))
-
         session.delete(book_to_delete)
         session.commit()
         return redirect(url_for('show_list', author_id=author_id))
@@ -338,22 +362,27 @@ def delete_book(author_id, book_id):
         return render_template('delete-book.html', book=book_to_delete)
 
 def get_user_id(email):
-    """Get user id."""
+    """
+    Takes user email and returns user id.
+    """
     try:
         user = session.query(User).filter_by(email=email).one()
         return user.id
     except:
         return None
 
-
 def get_user_info(user_id):
-    """Get user information."""
+    """
+    Takes user_id and returns user information.
+    """
     user = session.query(User).filter_by(id=user_id).one()
     return user
 
 # Create a new user in the database
 def create_user(login_session):
-    """Create a user."""
+    """
+    Takes session parameters login_session and creates new user.
+    """
     new_user = User(
         name=login_session['username'],
         email=login_session['email'])
