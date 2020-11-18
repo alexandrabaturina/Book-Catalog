@@ -1,11 +1,16 @@
-# Book Catalog
+# Full Stack Web Development Nanodegree Project #2: Book Catalog
 ## Overview
-The goal of the project is to develop a RESTful web application using the ***Flask*** framework as well as implement third-party ***OAuth*** authentication. It is also intended to get practice with the various HTTP methods and *CRUD*(create, read, update, and delete) operations.
+The **Book Catalog** is the second project for [Full Stack Web Developer Nanodegree Program](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044) provided by Udacity. It requires to build a RESTful web application that provides a list of books within a variety of authros as well as provides a user registration and authentication system.
 
-The **Book Catalog** aplication is built as the second project for [Full Stack Web Developer Nanodegree Program](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044) provided by Udacity.
+The project has the following goals:
+* Web development with [Flask](https://flask.palletsprojects.com/en/1.1.x/) framework
+* Make a web server in Python
+* Implement ***CRUD*** (create, read, update, and delete) functionality
+* Implement third-party ***OAuth*** auhtentication
+* Serialize data
+* Create JSON APIs
 
 You can check the project deployment by visiting [http://54.191.192.22.xip.io](http://54.191.192.22.xip.io.).
-
 ## Features
 The **Book Catalog** application has the following features.
 * Providing a list of books within a variety of authors
