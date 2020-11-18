@@ -50,6 +50,7 @@ a {
 
 .new:hover{
   text-decoration: underline;
+  color: #315660;
 }
 
 .pane {
@@ -97,7 +98,6 @@ li {
   display: flex;
   flex-direction: column;
   text-align: center;
-  padding-bottom: 10px;
 }
 
 .author-names {
@@ -105,8 +105,9 @@ li {
   margin-bottom: 5px;
 }
 
-.author-names:hover {
-  color: #012e33;
+.author-names:hover,
+.nav-link:hover {
+  color: #315660;
 }
 
 .book-info,
@@ -123,6 +124,7 @@ li {
 .book-info:last-child,
 .author-info:last-child {
   border-bottom: none;
+  margin-bottom: 0px;
 }
 
 .book-info h3 {
