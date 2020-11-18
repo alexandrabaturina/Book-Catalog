@@ -2,10 +2,6 @@
 	<nav>
 		<ul class="nav-menu">
 
-			{% if 'username' in session %}
-				<li>Welcome, {{session['username']}}!</li>
-			{% endif %}
-
 				<li>
 					<a class="nav-link" href="{{url_for('show_authors_list')}}">Show All Authors</a>
 				</li>
@@ -18,7 +14,7 @@
 
 			{% if 'username' in session %}
 				<li>
-					<a class="nav-link" href="{{url_for('gdisconnect')}}">Logout</a>
+					{{session['username']}} (<a class="nav-link" href="{{url_for('gdisconnect')}}">Logout</a>)
 				</li>
 			{% endif %}
 
