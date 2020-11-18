@@ -332,6 +332,8 @@ def edit_book(author_id, book_id):
             book_to_edit.title = request.form['book-name']
         if request.form['description']:
             book_to_edit.description = request.form['description']
+        else:
+            book_to_edit.description = 'No description provided for this book yet.'
         session.add(book_to_edit)
         session.commit()
         return redirect(url_for('show_list', author_id=author_id))
