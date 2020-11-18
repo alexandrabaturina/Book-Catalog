@@ -33,34 +33,19 @@ The **Book Catalog** application provides access to the following JSON APIs:
     * id: number
     * name: string(50)
 ## Getting Started
-### Prerequisites
-To use Book Catalog application, the following software is required:
-  - Git -Download from [here](https://git-scm.com/downloads).
-  - *VirtualBox* – software to run the virtual machine. Download from [here](https://www.virtualbox.org/wiki/Download_Old_Builds_5_1)
-  - *Vagrant* – software to configure virtual machine. Download the version for your operating system from [here](https://www.vagrantup.com/downloads.html)
-
-### Starting the Virtual Machine
-Change to the directory containg virtual machine files. Find the **vagrant** directory and change to it. Inside the **vagrant** directory, run the following command.
+### Loading Data to the Database
+To create database, run the following command:
 ```sh
-$ vagrant up
+python database_setup.py
 ```
-Once **vagrant up** is finished running, log in to the virtual machine using the following command.
+To populate database, run the following command:
 ```sh
-$ vagrant ssh
+python lotsofitems.py
 ```
-### Loading the Data to the Database
-To populate DB, run the following command.
+## Running Locally
+To run **Book Catalog** from the terminal, use the following command:
 ```sh
-$ python database_setup.py
-```
-Then run:
-```sh
-$ python lotsofitems.py
-```
-## Running
-To run Book Catalog from the terminal, use the following command.
-```sh
-$  python application.py
+python application.py
 ```
 To access the application via your browser, visit http://localhost:8000.
 
