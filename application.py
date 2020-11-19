@@ -299,7 +299,8 @@ def add_book(author_id):
         new_book = Book(
             title=request.form['title-to-add'],
             description=request.form['description-to-add'],
-            author_id=author_id)
+            author_id=author_id,
+            user_id=login_session['user_id'])
         session.add(new_book)
         session.commit()
 

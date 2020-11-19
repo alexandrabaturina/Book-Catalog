@@ -14,7 +14,7 @@
 
       <div class="book-title">
         <label for="book-name">Title:</label>
-        <input type ='text' name='book-name' id="book-name" value='{{book.title}}'>
+        <input type ='text' name='book-name' id="book-name" value='{{ book.title }}'>
 
         {% if empty_title %}
           <div class="form-error">
@@ -26,13 +26,15 @@
 
       <div class="book-description">
         <label for="description">Description:</label>
-        <textarea id="description" name='description'>{{book.description}}</textarea>
+        <textarea id="description" name='description'>{{ book.description }}</textarea>
       </div>
 
-      <div class="edit-buttons">
-        <input type="submit" name="submit-button" value="Save">
-        <input type="submit" name="submit-button" value="Cancel">
-      </div>
+      {% if book.user_id == session['user_id'] %}
+        <div class="edit-buttons">
+          <input type="submit" name="submit-button" value="Save">
+          <input type="submit" name="submit-button" value="Cancel">
+        </div>
+      {% endif %}
 
     </form>
   </div>
