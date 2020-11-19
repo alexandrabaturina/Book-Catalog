@@ -3,18 +3,18 @@
 		<ul class="nav-menu">
 
 				<li>
-					<a class="nav-link" href="{{url_for('show_authors_list')}}">Show All Authors</a>
+					<a class="nav-link" href="{{ url_for('show_authors_list') }}">Show All Authors</a>
 				</li>
 
 			{% if 'username' not in session %}
 				<li>
-					<a class="nav-link" id="foo" href="{{url_for('show_login')}}" > Login with Google </a>
+					<a class="nav-link" id="foo" href="{{ url_for('show_login') }}" > Login with Google </a>
 				</li>
 			{% endif %}
 
 			{% if 'username' in session %}
 				<li>
-					{{session['username']}} (<a class="nav-link" href="{{url_for('gdisconnect')}}">Logout</a>)
+					{{session['username']}} (<a class="nav-link" href="{{ url_for('gdisconnect') }}">Logout</a>)
 				</li>
 			{% endif %}
 
