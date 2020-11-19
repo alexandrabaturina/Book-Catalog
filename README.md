@@ -40,9 +40,9 @@ python database_setup.py
 ```
 To populate database, run the following command:
 ```sh
-python lotsofitems.py
+python lotsofbooks.py
 ```
-## Running Locally
+### Running Locally
 To run **Book Catalog** from the terminal, use the following command:
 ```sh
 python application.py
