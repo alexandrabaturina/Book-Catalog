@@ -22,7 +22,6 @@
                   client_id: '489474672499-v9uhsrfeimjraj8hktb0qr9roi3jc3dd.apps.googleusercontent.com',
                   scope: 'profile email'
                 });
-                  console.log("Sign in button clicked")
                   auth2.grantOfflineAccess({
                     'redirect_uri': 'postmessage'
                   }).then(offlineAccess);
@@ -32,7 +31,6 @@
             function offlineAccess(resp) {
               console.log("In offline access")
               let auth_code = resp.code;
-              console.log(resp);
               $.ajax({
                     type: "POST",
                     url: "{{url_for('gconnect')}}?state={{STATE}}",
