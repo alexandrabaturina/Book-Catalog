@@ -33,7 +33,7 @@ class Book(Base):
 
     title = Column(String(50), nullable=False)
     id = Column(Integer, primary_key=True)
-    description = Column(String(250))
+    description = Column(String(5000))
     author_id = Column(Integer, ForeignKey('author.id'))
     author = relationship(Author)
     user_id = Column(Integer, ForeignKey('user.id'))
