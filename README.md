@@ -1,6 +1,6 @@
 # Full Stack Web Development Nanodegree Project #2: Book Catalog
 ## Overview
-The **Book Catalog** is the second project for [Full Stack Web Developer Nanodegree Program](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044) provided by Udacity. It requires to build a RESTful web application that provides a list of books within a variety of authros as well as provides a user registration and authentication system.
+The **Book Catalog** is the second project for [Full Stack Web Developer Nanodegree Program](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044) provided by Udacity. It requires to build a RESTful web application that provides a list of books within a variety of authros as well as user registration and authentication system.
 
 The project has the following goals:
 * Develop a web app with [Flask](https://flask.palletsprojects.com/en/1.1.x/) framework
@@ -34,12 +34,12 @@ The **Book Catalog** application provides access to the following JSON APIs:
     * id: number
     * name: string(50)
 ## Getting Started
-### Loading Data to the Database
+### Loading Mock Data to the Database
 To create database, run the following command:
 ```sh
 python database_setup.py
 ```
-To populate database, run the following command:
+To populate database with mock data, run the following command:
 ```sh
 python lotsofbooks.py
 ```
