@@ -5,13 +5,16 @@ The **Book Catalog** is the second project for [Full Stack Web Developer Nanodeg
 The project has the following goals:
 * Develop a web app with [Flask](https://flask.palletsprojects.com/en/1.1.x/) framework
 * Make a web server in Python
-* Work with SQLite
+* Work with [SQLite](https://docs.python.org/3/library/sqlite3.html)
 * Implement ***CRUD*** (create, read, update, and delete) functionality
 * Implement third-party ***OAuth*** auhtentication
 * Serialize data
 * Create JSON APIs
 
+### Deployment
 You can check the project deployment by visiting [http://54.191.192.22.xip.io](http://54.191.192.22.xip.io).
+
+You can check web and database server configuration in [Linux Server Configuration](https://github.com/alexandrabaturina/linux-server-configuration) repository. For deployment, [PostgreSQL](https://www.postgresql.org/) is used instead of SQLite.
 ## Features
 The **Book Catalog** application has the following features:
 * Providing a list of authors
